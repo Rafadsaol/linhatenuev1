@@ -1,8 +1,10 @@
-# Linha Tênue — V3 / Interactive Shopping Experience
+# Linha Tênue — V4 / Admin Experience
 
-Loja de streetwear para portfólio em **React 19 + Vite 6**, evoluída sobre a V2 Street Campaign. Mantém a identidade **LT Axis**, os 18 produtos, coleções, fotografias, composição editorial, filtros, favoritos e rotas anteriores. A V3 completa a jornada de compra com pedidos inteiramente fictícios, executados no navegador.
+Loja de streetwear para portfólio em **React 19 + Vite 6**, com duas experiências integradas: vitrine Street Campaign e painel **LT AXIS / ADMIN**. Tudo é demonstrativo, com dados locais e nenhuma autenticação, pagamento, entrega ou serviço comercial real.
 
-## Executar e validar
+A V4 evolui o projeto existente. Preserva a identidade LT Axis, os 18 produtos, fotografias individuais, catálogo com busca/filtros/ordenação, favoritos, sacola, checkout de três etapas, conta demo, histórico, Shop the Look, galeria ampliável e previews mobile de outfits/acabamento.
+
+## Executar
 
 Node.js **22.8+** (recomendado: Node 24) e npm:
 
@@ -14,129 +16,133 @@ npm run build
 npm run preview
 ```
 
-No terminal PowerShell do VS Code, use `npm.cmd` quando a política do Windows bloquear `npm.ps1`:
+No PowerShell do VS Code, se `npm.ps1` estiver bloqueado:
 
 ```powershell
 git pull origin main
 npm.cmd ci
-npm.cmd run dev
+npm.cmd run dev -- --port 3000
 ```
 
-O Vite informa o endereço local disponível no terminal. Os testes usam o runner nativo do Node, sem dependências adicionais. O projeto JavaScript não possui scripts de lint ou TypeScript; o build verifica a resolução dos módulos React.
+O servidor informa os endereços Local e Network. Para abrir no celular, use Network com ambos os dispositivos no mesmo Wi-Fi. **Cada navegador/dispositivo possui sua própria demonstração local**: a persistência não é compartilhada entre computador e celular.
 
-O [registro de validação da V3](docs/V3-VALIDATION.md) descreve os testes de lógica, a jornada no navegador e as verificações de responsividade e teclado.
+## Acessar o painel
 
-## O que a V3 entrega
+Abra `http://localhost:3000/#/admin` ou o link **Painel demo ↗** no rodapé da loja. Não há login. O administrador é fictício, e todas as páginas exibem “Ambiente demonstrativo — dados fictícios.”
 
-- Sacola persistente com variantes agrupadas por produto/cor/tamanho, limites de estoque fictício, quantidades, remoção e confirmação para esvaziar; drawer com continuidade para loja, sacola e checkout.
-- Checkout em **revisão → entrega → pagamento demo**, com resumo compartilhado e atualização imediata de valores. Destino de exemplo predefinido; nenhuma solicitação de CPF, endereço pessoal ou dados financeiros.
-- Cupons locais, frete padrão/expresso, progresso para gratuidade e cálculos monetários em centavos.
-- Pedido com identificador local `LT-DEMO-…`, cópia dos produtos/variantes/preços/totais, confirmação, histórico e acompanhamento fictício manual em quatro etapas. O resumo registrado não depende do catálogo atual ou de mudanças posteriores na sacola.
-- **Visitante Demo / Conta demonstrativa** com visão geral, pedidos, favoritos, dados fixos de exemplo, preferência de movimento e reinício da experiência. A aparência de acesso/cadastro da V2 continua disponível, com campos fictícios preenchidos e somente leitura.
-- **Shop the Look** na home e campanha: três combinações de camiseta + calça, links individuais, valor combinado e painel para escolher variantes e adicionar uma ou ambas as peças. A seleção é validada integralmente antes de alterar a sacola.
-- Prévia mobile da campanha com opções **Masculino / Feminino** para enquadrar cada outfit. Cards com botões **Frente / Acabamento**, sem abrir outra página; o Quick View também permite alternar as fotos.
-- **Quick View** nos cards: imagem, cor, tamanho, quantidade, adicionar e link para a página completa. Dialogs nativos com Escape, foco e navegação por teclado.
-- Estados vazios, erros de seleção, feedback de cupons, confirmação discreta e respeito a `prefers-reduced-motion` e à preferência visual do visitante.
+| Rota administrativa | Recursos funcionais |
+| --- | --- |
+| `#/admin` | Indicadores calculados, gráficos interativos, períodos 7/30/90/todos, filtro por origem, pedidos recentes, alertas e atalhos |
+| `#/admin/produtos` | Busca, categoria/status/ordenação, cadastro, edição, promoção, preview, variantes, imagens locais, duplicação oculta, ativação/ocultação e exclusão confirmada |
+| `#/admin/estoque` | Quantidades por variante, grade numérica de calças, disponibilidade, ajuste/reposição e histórico de até 300 movimentações |
+| `#/admin/pedidos` | Número/status/período/origem, detalhes e snapshots, transições sequenciais, cancelamento elegível e devolução única de estoque |
+| `#/admin/clientes` | 19 perfis fictícios, busca e segmento, pedidos associados, itens e indicadores por perfil |
+| `#/admin/cupons` | Percentual ou fixo, mínimo em peças, limite de utilizações, validade opcional, ativação, edição e exclusão confirmada |
+| `#/admin/campanhas` | CMS local do hero/topbar/drop/imagem/CTA/destaques, prévia antes de salvar e restauração confirmada |
+| `#/admin/relatorios` | Vendas, pedidos, ticket, produtos, categorias e volume por período/origem; exportação CSV no navegador |
+| `#/admin/configuracoes` | Limite de estoque baixo, movimento, informações de persistência, restaurações confirmadas e backup JSON |
+
+O painel tem navegação em drawer no mobile, tabelas com rolagem contida e formulários em coluna única. Modais funcionam com Tab, Shift+Tab e Escape, com retorno de foco.
+
+## Roteiro loja → admin → loja
+
+1. Em **Produtos → Cadastrar produto**, preencha nome, slug/SKU únicos, descrições, preço, variantes e imagens locais. Salve e abra a loja: a peça aparece no catálogo. “Destaque da home” também a inclui no Shop the Drop.
+2. Edite o preço ou cadastre uma promoção. As próximas operações usam o novo preço. Oculte a peça para retirá-la da vitrine e impedir adições; ative-a novamente.
+3. Em **Estoque**, ajuste uma variante para zero. A loja sinaliza indisponibilidade e impede sua adição. Reponha para continuar.
+4. Em **Cupons**, crie, por exemplo, `DEMO20`, fixo de **R$ 20,00**, mínimo de **R$ 100,00** e limite de **1 uso**.
+5. Na loja, selecione a variante, adicione à sacola, aplique `DEMO20`, avance por revisão/entrega/pagamento demo e clique em **SIMULAR PEDIDO**. Nenhum dado financeiro é solicitado.
+6. Volte a **Pedidos**. O novo registro tem origem **Visitante · V4**, cliente **Visitante Demo** e estoque já descontado. Avance para preparação, envio e entrega; a conta demo recebe o mesmo status.
+7. Para testar cancelamento, use outro pedido em estado registrado/preparação. Confirme o cancelamento com devolução de unidades. Recarregar não repete a devolução. Se optar por adiar, “Devolver estoque” fica disponível uma única vez.
+8. Em **Campanhas**, altere título/topbar/CTA e salve. A home reflete as mudanças. Em **Relatórios**, filtre origem/período e exporte CSV. Em **Configurações**, exporte um backup JSON.
+
+Para demonstrar atualização entre abas, mantenha loja e admin abertos **no mesmo navegador e origem**. Alterações são propagadas pelo evento `storage`. Histórico de pedidos conserva nome, variantes, preço, desconto, frete e total da simulação mesmo após editar ou excluir o produto.
+
+## Dados iniciais e indicadores
+
+A primeira inicialização cria **18 produtos**, **42 pedidos históricos fictícios**, **18 perfis de exemplo + Visitante Demo**, três cupons e a campanha original. IDs são estáveis; refresh não duplica os exemplos. O cadastro usa um contador de IDs que não é reutilizado após excluir produtos.
+
+Origens são identificadas separadamente:
+
+- **Exemplo inicial:** histórico para apresentar gráficos; não gera baixa adicional no estoque.
+- **Visitante · V3:** pedidos migrados, com seus valores preservados e sem baixa retroativa.
+- **Visitante · V4:** novos pedidos, com baixa de estoque registrada na mesma gravação local.
+
+A área do cliente mostra somente os pedidos do Visitante Demo. O admin permite consultar todas as origens.
+
+Vendas e ticket usam o total dos pedidos não cancelados, incluindo o frete fictício. Produtos mais presentes contam unidades; categorias contam pedidos não cancelados contendo cada categoria (um pedido pode aparecer em mais de uma). Período e origem filtram os indicadores transacionais; produtos, estoque e perfis mostram o estado atual dos cadastros.
+
+## Estoque e estados dos pedidos
+
+Estoque baixo começa em **5 unidades ou menos por variante**, configurável entre 0 e 100. Quantidades de estoque aceitam inteiros de 0 a 10.000. Peças ocultas, removidas ou variantes sem estoque deixam de ser compráveis. A sacola é reconciliada com o catálogo após alterações, preservando apenas seleções disponíveis e limitando quantidades ao estoque.
+
+Fluxo permitido: **Registrado → Em preparação → Enviado → Entregue**. Cancelamento apenas em registrado/preparação; entregue e cancelado são estados finais. Não há saltos ou transições repetidas. Uma baixa ou devolução não reaparece após refresh.
+
+Pedidos de exemplo/V3 não recebem reposição por cancelamento, pois não tiveram baixa nesta base. Se uma peça/variante tiver sido excluída, a devolução ignora essa variante sem recriar produtos; o snapshot do pedido permanece intacto.
 
 ## Cupons e frete
 
-| Código | Benefício |
+| Código inicial | Benefício |
 | --- | --- |
 | `LT10` | 10% sobre as peças |
 | `AXIS20` | 20% sobre as peças |
 | `LINHA10` | Alias de 10% preservado da V2 |
 
-Um único cupom por pedido: aplicar outro substitui o anterior. Códigos são normalizados sem distinguir maiúsculas; inválidos exibem erro e preservam o cupom válido atual. O desconto é arredondado uma vez sobre o subtotal em centavos, antes do cálculo de frete. Frete nunca recebe desconto.
+Um cupom por pedido. Aplicar outro substitui o anterior; um código inválido não remove o cupom válido atual. Desconto fixo é limitado ao subtotal; percentuais aceitam inteiros de 1 a 100. Mínimo refere-se ao subtotal antes de descontos. Usos contam pedidos não cancelados; cancelar libera o uso. Validade considera o fim do dia no horário de Brasília. Alterações no admin podem invalidar um cupom da sacola: o aviso pede removê-lo ou substituí-lo antes de concluir.
 
-| Modalidade fictícia | Valor | Prazo ilustrativo |
-| --- | --- | --- |
-| Padrão | R$ 19,90; grátis se peças **após descontos ≥ R$ 299,00** | 5–8 dias úteis fictícios |
-| Expressa | R$ 34,90, inclusive acima do limite | 1–3 dias úteis fictícios |
+Cálculos usam centavos. Frete padrão **R$ 19,90**, grátis quando peças **após descontos ≥ R$ 299,00**; expressa **R$ 34,90**. O desconto nunca reduz o frete. Prazos são fictícios.
 
-## Jornada para apresentar o projeto
-
-1. Na home, abra **Montar este look: Forma em equilíbrio**. Escolha Boxy Fit Black no tamanho M e Baggy Washed Denim no 38. Adicione ambas.
-2. Vá à sacola: subtotal **R$ 319,80** e padrão grátis. Experimente um cupom inválido e depois **LT10**: peças **R$ 287,82**, padrão **R$ 19,90**, total **R$ 307,72**. Isso demonstra que a gratuidade considera o valor após desconto.
-3. Abra o checkout, revise as peças e continue. Em entrega, compare padrão e expressa; com expressa, o total do exemplo é **R$ 322,72**.
-4. Escolha Cartão, Pix ou Boleto **(demonstração)**. Nenhuma opção solicita dados ou gera instruções de pagamento. Clique em **SIMULAR PEDIDO**.
-5. A confirmação mostra o identificador, as peças e os valores. A sacola fica vazia. Recarregue a página para conferir persistência.
-6. Abra **VER MEUS PEDIDOS → Ver detalhes → Simular próxima etapa**. Avance até “Entregue ficticiamente” e recarregue: o progresso continua salvo.
-7. Abra Minha conta, explore favoritos e dados de exemplo. **REINICIAR DEMONSTRAÇÃO** pede confirmação e apaga apenas os dados desta loja.
-
-Também é possível iniciar pelos cards com **Quick view**, combinar variantes diferentes do mesmo produto e conferir limites de estoque na sacola.
-
-## Rotas
-
-A navegação por hash funciona em hospedagem estática, preservando os links da V2:
+## Rotas da loja preservadas
 
 | Rota | Experiência |
 | --- | --- |
-| `#/` | Street Campaign, categorias, lançamentos, manifesto, Boxy Fit, Feminino e Shop the Look |
-| `#/loja` | Catálogo compartilhável com busca, filtros e ordenação |
+| `#/` | Home Street Campaign, categorias, coleções, manifesto e Shop the Look |
+| `#/loja` | Catálogo, busca, filtros e ordenação compartilháveis na URL |
 | `#/loja/camisetas-boxy`, `#/loja/essentials`, `#/loja/calcas-baggy` | Categorias originais |
 | `#/loja/baby-tees`, `#/loja/boxy-fit`, `#/loja/drops` | Coleções e drops |
-| `#/produto/boxy-fit-black` | Produto, galeria ampliável, variantes, medidas e sugestões |
-| `#/favoritos` | Curadoria salva neste navegador |
-| `#/sacola` | Sacola, cupom e resumo |
-| `#/checkout` | Checkout demonstrativo em três etapas |
-| `#/pedido-confirmado/:id` | Confirmação fictícia e resumo registrado |
-| `#/pedidos` | Histórico local de pedidos fictícios |
-| `#/pedidos/:id` | Detalhes e acompanhamento manual |
+| `#/produto/:slug` | Produto, galeria/zoom, variantes, medidas e sugestões |
+| `#/favoritos`, `#/sacola`, `#/checkout` | Curadoria, sacola e checkout demonstrativo |
+| `#/pedido-confirmado/:id`, `#/pedidos`, `#/pedidos/:id` | Confirmação e histórico local do visitante |
 | `#/minha-conta` | Visão geral do Visitante Demo |
-| `#/minha-conta?area=pedidos` | Pedidos dentro da conta; também aceita `resumo`, `acesso`, `favoritos`, `dados` |
-| `#/conta` | Aparência de acesso/cadastro preservada da V2 |
-| `#/conta?area=pedidos` | Links antigos das áreas da conta continuam válidos |
+| `#/conta` | Acesso/cadastro visual com dados fictícios somente leitura |
+| `#/minha-conta?area=pedidos` | Também aceita `resumo`, `acesso`, `favoritos`, `dados`; links antigos `#/conta?area=…` preservados |
 | `#/campanha`, `#/sobre` | Campanha editorial e manifesto LT Axis |
 
-Links numéricos antigos, como `#/produto/1`, continuam funcionando. Pedidos inexistentes e checkout sem peças exibem um estado vazio com navegação útil.
+Links antigos como `#/produto/1` continuam válidos para produtos ativos. A home mantém as opções Masculino/Feminino no mobile; cards e Quick View mantêm Frente/Acabamento sem exigir navegação à página do produto.
 
-### Catálogo e produto preservados
+## Persistência, migração e restauração
 
-Busca sem distinção de acentos; filtros combináveis por categoria, público, tamanho, cor e faixa de preço; ordenação por novidades, preço ou nome. Estado na URL, por exemplo:
+A fonte compartilhada é **`lt-database-v4`**, com `schemaVersion: 4`, revisão local, catálogo/variantes, pedidos, perfis fictícios, cupons, campanha, sacola, favoritos, preferências, configurações e movimentações.
+
+Quando não existe uma V4 válida, a leitura migra `lt-cart`, `lt-favorites`, `lt-orders` e `lt-preferences`, mantendo as chaves antigas intactas. Depois disso, apenas a base V4 dirige a experiência; as chaves antigas não são espelhos reativos. Histórico migrado não sofre recálculo por preço/cupom atual. Dados inválidos são validados ou recuperados; quando possível, o documento V4 corrompido é preservado em `lt-recovery-v4` antes de substituí-lo.
+
+**Configurações → Reiniciar demonstração inteira** pede confirmação, repõe dados iniciais e limpa pedidos adicionais, sacola, favoritos e preferências. Remove apenas as chaves próprias antigas/de recuperação, mantendo a base V4 reiniciada. Nunca usa `localStorage.clear()`.
+
+Restaurar catálogo, campanhas ou cupons separadamente também exige confirmação. A restauração de catálogo repõe estoques iniciais e considera as baixas históricas conciliadas, evitando devolver novamente unidades de um estoque já restaurado; os valores dos pedidos são preservados.
+
+Sem armazenamento disponível, a interface informa que tudo fica apenas na sessão. Abas usam a mesma origem (protocolo, host e porta); `localhost`, IP de rede, portas diferentes e navegadores distintos têm bases independentes. Edições simultâneas seguem a última gravação local; não há transações distribuídas, reserva comercial de estoque ou sincronização entre dispositivos.
+
+O CSV e o backup JSON são gerados por Blob no próprio navegador, somente com dados fictícios. O backup é uma exportação; importação de backup não faz parte desta versão.
+
+## Organização e bibliotecas
 
 ```text
-#/loja?colecao=Feminino&tamanho=M&cor=Off-white&max=120&ordenar=menor-preco
+src/state/Store.jsx             # Context compartilhado, transações e storage event
+src/lib/admin/catalog.js       # produtos, variantes, validação e assets locais
+src/lib/admin/database.js      # schema, leitura validada e migração da V3
+src/lib/admin/seed.js           # exemplos estáveis e configurações iniciais
+src/lib/admin/operations.js     # estoque, pedidos e transições atômicas locais
+src/lib/admin/analytics.js      # indicadores, períodos, CSV e download local
+src/lib/admin/campaign.js       # configuração/validação do CMS
+src/lib/coupons.js, pricing.js  # cupons dinâmicos e totais em centavos
+src/admin/                     # nove telas, shell, charts, formulários e estilos
+src/components/                # componentes da loja reutilizados/preservados
+src/data.js                    # catálogo original mantido como base de restauração
 ```
 
-Os filtros de cor/tamanho consideram a mesma variante disponível. O banner editorial do catálogo não altera a contagem de peças. A galeria mantém fotos individuais em alta resolução, acabamento ilustrativo e editorial no corpo quando disponível, com ampliação no tamanho original. Calças usam grade numérica. Todos os produtos e fotografias são conceituais; medidas e orientações de cuidados/trocas também são ilustrativas.
+Nenhuma dependência foi adicionada. Gráficos usam SVG/CSS e controles acessíveis; React Context, lucide-react e as fontes locais existentes foram mantidos.
 
-## Organização
+## Validação e limites
 
-```text
-src/
-  data.js                    # 18 produtos, variantes, estoque e fotos locais
-  state/Store.jsx            # estado compartilhado e persistência da demo
-  lib/
-    catalog.js, router.js    # catálogo e navegação existentes
-    cart.js                  # agrupamento, estoque e adição atômica de looks
-    coupons.js               # validação dos códigos locais
-    shipping.js, pricing.js  # frete e cálculos em centavos
-    orders.js                # snapshots, leitura validada e etapas fictícias
-    demo.js                  # perfil, destino e meios fictícios
-    campaign.js, looks.js    # curadoria editorial e combinações
-  components/
-    VariantPicker.jsx        # variantes reutilizáveis no Quick View e looks
-    QuickView.jsx, LookBuilder.jsx
-    CouponForm.jsx, OrderTotals.jsx
-    OrderRecord.jsx          # itens registrados, histórico e timeline
-    DemoControls.jsx         # confirmações de limpeza/reinício
-    ...                      # componentes editoriais e V2 preservados
-  pages/
-    Checkout.jsx, Orders.jsx # novos fluxos demonstrativos
-    ...                      # home, catálogo, produto, sacola, conta e institucionais
-  experience.css             # apresentação da V3 sobre Street Campaign
-public/brand/                # logo LT Axis e favicon preservados
-public/images/               # imagens conceituais locais
-```
+**37 testes de lógica** no runner nativo do Node (incluindo os 23 anteriores), build Vite e verificações de navegador. Não há scripts de lint/typecheck configurados nesta stack JavaScript. Consulte o [registro da V4](docs/V4-VALIDATION.md) para os fluxos, larguras e limites de cobertura.
 
-## Persistência, privacidade e limites
-
-Somente quatro chaves próprias são usadas no `localStorage`: `lt-cart`, `lt-favorites`, `lt-orders` e `lt-preferences` (cupom, modalidade e redução de movimento). A leitura valida os dados e mantém compatibilidade com sacolas antigas. Pedidos restaurados usam somente campos previstos no esquema; o destino é sempre o exemplo fictício. O reinício remove essas quatro chaves após confirmação e preserva outros dados do navegador.
-
-**Tudo é demonstrativo.** Não há backend, conta real, pagamento, QR Code Pix, emissão de boleto, entrega, rastreamento, cadastro de newsletter ou atendimento comercial. Os campos da conta usam valores fictícios fixos; senhas, dados pessoais e bancários não são coletados nem persistidos. Nenhuma requisição externa gera pedidos. Fotos e fontes são locais.
-
-O histórico pertence ao navegador/origem atual, não sincroniza entre dispositivos e pode ser apagado pelo visitante ou pelas configurações do navegador. Se o armazenamento estiver bloqueado ou cheio, a interface informa que os dados ficam apenas na sessão. Estoque é uma restrição fictícia por sacola, sem reserva ou baixa global após um pedido. As etapas avançam somente por ação do visitante. Recarregar o checkout retorna à revisão com sacola, cupom e frete preservados.
-
-## Próximas evoluções — V4
-
-Para aprofundar o portfólio: suíte de navegador versionada em CI, mais editoriais próprios e comparação de medidas/caimentos. Uma eventual operação comercial exige projeto próprio de backend, catálogo/estoque reais, autenticação, checkout seguro, gestão de pedidos e fotografias de produção; esses serviços não fazem parte da V3.
+Não há backend, conta real, senha real, pagamentos, emissão de boletos/QR Code, e-mail, entrega, upload ou serviço pago. Os dados de perfil são fixos e fictícios. Fotografias, acabamento, medidas, prazos e orientações de troca são conceituais. Nenhuma operação gera pedidos em serviços externos.

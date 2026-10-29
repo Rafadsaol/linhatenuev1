@@ -1,0 +1,22 @@
+import React,{useEffect,useState} from 'react';
+import {LayoutDashboard,Package,Boxes,ShoppingBag,Users,Ticket,Megaphone,ChartNoAxesCombined,Settings as SettingsIcon,ArrowUpRight,Menu,Search,Command} from 'lucide-react';
+import {BrandMark} from '../components/BrandLogo';
+import Dialog from '../components/Dialog';
+import {navigate} from '../lib/router';
+import Overview from './Overview';
+import Products from './Products';
+import Inventory from './Inventory';
+import Orders from './Orders';
+import Customers from './Customers';
+import Coupons from './Coupons';
+import Campaigns from './Campaigns';
+import Settings from './Settings';
+const links=[['/admin','Visão geral',LayoutDashboard],['/admin/produtos','Produtos',Package],['/admin/estoque','Estoque',Boxes],['/admin/pedidos','Pedidos',ShoppingBag],['/admin/clientes','Clientes demo',Users],['/admin/cupons','Cupons',Ticket],['/admin/campanhas','Campanhas',Megaphone],['/admin/relatorios','Relatórios',ChartNoAxesCombined],['/admin/configuracoes','Configurações',SettingsIcon]];
+function Sidebar({route,onNavigate}){return <div className="admin-sidebar-content"><a href="#/admin" className="admin-brand" onClick={onNavigate}><BrandMark/><span>LT AXIS<small>ADMIN / LINHA TÊNUE</small></span></a><span className="admin-navigation-caption">WORKSPACE / DEMONSTRAÇÃO</span><nav aria-label="Navegação administrativa">{links.map(([path,label,Icon])=><a key={path} href={'#'+path} className={route.path===path?'active':''} aria-current={route.path===path?'page':undefined} onClick={onNavigate}><Icon size={18}/><span>{label}</span>{route.path===path&&<i/>}</a>)}</nav><div className="admin-sidebar-bottom"><a href="#/" onClick={onNavigate}>Abrir vitrine<ArrowUpRight size={17}/></a><div><span className="admin-avatar">AX</span><span>Admin Demo<small>Conta fictícia / sem login</small></span></div><p>Ambiente demonstrativo<br/>Dados locais. Perspectivas reais.</p></div></div>}
+export default function AdminApp({route}){
+ const [menu,setMenu]=useState(false),[query,setQuery]=useState('');
+ useEffect(()=>setMenu(false),[route.path]);
+ const active=links.find(([path])=>route.path===path);
+ let page=route.path==='/admin'?<Overview/>:route.path==='/admin/produtos'?<Products route={route}/>:route.path==='/admin/estoque'?<Inventory route={route}/>:route.path==='/admin/pedidos'?<Orders route={route}/>:route.path==='/admin/clientes'?<Customers/>:route.path==='/admin/cupons'?<Coupons route={route}/>:route.path==='/admin/campanhas'?<Campaigns/>:route.path==='/admin/relatorios'?<Overview reports/>:route.path==='/admin/configuracoes'?<Settings/>:<div className="admin-panel"><h1>Página não encontrada</h1><a href="#/admin">Voltar à visão geral</a></div>;
+ return <div className="admin-app"><a className="skip-link" href="#main-content" onClick={e=>{e.preventDefault();document.getElementById('main-content')?.focus()}}>Ir para o conteúdo</a><aside className="admin-sidebar"><Sidebar route={route}/></aside><div className="admin-workspace"><div className="admin-topbar" role="banner"><button className="admin-icon-button admin-menu-toggle" aria-label="Abrir menu administrativo" aria-haspopup="dialog" aria-expanded={menu} onClick={()=>setMenu(true)}><Menu size={22}/></button><div className="admin-breadcrumb">Workspace <span>/</span> <strong>{active?.[1]||'Admin'}</strong></div><form className="admin-global-search" role="search" onSubmit={e=>{e.preventDefault();navigate(`/admin/produtos?q=${encodeURIComponent(query)}`)}}><Search size={16}/><label className="sr-only" htmlFor="admin-global-search">Buscar no painel</label><input id="admin-global-search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar produtos no painel"/><button type="submit" className="admin-icon-button" aria-label="Pesquisar produtos no painel"><Command size={14}/></button></form><span className="admin-demo-chip"><i/>DEMO</span><span className="admin-avatar topbar-avatar">AX</span></div><div className="admin-environment-note"><i/>Ambiente demonstrativo — dados fictícios.<a href="#/">Ver loja<ArrowUpRight size={12}/></a></div><main id="main-content" tabIndex={-1} className="admin-main" key={route.path}>{page}</main><div className="admin-bottom-note"><span>LINHA TÊNUE / LT AXIS ADMIN</span><span>V4 · EXPERIÊNCIA LOCAL DE PORTFÓLIO</span></div></div><Dialog open={menu} onClose={()=>setMenu(false)} title="LT AXIS / ADMIN" drawer className="admin-menu-dialog"><Sidebar route={route} onNavigate={()=>setMenu(false)}/></Dialog></div>;
+}

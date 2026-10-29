@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {ArrowRight,Search,SlidersHorizontal,X} from 'lucide-react';
-import {products} from '../data';
+import {useStore} from '../state/Store';
 import {categoryOptions,defaultFilters,filtersHref,parseFilters,selectProducts} from '../lib/catalog';
 import {navigate} from '../lib/router';
 import Dialog from '../components/Dialog';
@@ -23,6 +23,7 @@ function FilterPanel({filters,update,prefix}){
  </div>;
 }
 export default function Shop({route}){
+ const {products}=useStore();
  const [drawer,setDrawer]=useState(false);
  const filters=parseFilters(route.search,route.path);
  const results=selectProducts(products,filters);

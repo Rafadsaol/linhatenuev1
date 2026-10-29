@@ -7,13 +7,14 @@ import './brand.css';
 import './v2.css';
 import './campaign.css';
 import './experience.css';
+import './admin/admin.css';
+import AdminApp from './admin/AdminApp';
 import '@fontsource/barlow-condensed/700.css';
 import '@fontsource/barlow-condensed/800.css';
 import '@fontsource/anton/latin-400.css';
 import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
-import {products} from './data';
 import {StoreProvider,useStore} from './state/Store';
 import {useRoute,navigate} from './lib/router';
 import {categoryHref} from './lib/catalog';
@@ -35,17 +36,19 @@ import Checkout from './pages/Checkout';
 import {Orders,OrderDetail,OrderConfirmation} from './pages/Orders';
 function App(){
  const route=useRoute();
- const {toast,setToast,storageFailed,setCartOpen,setQuickView,setActiveLook}=useStore();
+ const {products,recovered,toast,setToast,storageFailed,setCartOpen,setQuickView,setActiveLook}=useStore();
  const productKey=route.path.startsWith('/produto/')?route.path.split('/')[2]:null;
  const product=productKey?products.find(p=>p.slug===productKey||String(p.id)===productKey):null;
  useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});setCartOpen(false);setQuickView(null);setActiveLook(null)},[route.path]);
  useEffect(()=>{
-  const title=product?product.name:route.path.startsWith('/loja')?'Coleção / Drop 001':route.path.startsWith('/pedido-confirmado/')?'Pedido simulado confirmado':route.path.startsWith('/pedidos/')?'Detalhes da simulação':({'/favoritos':'Favoritos','/sacola':'Sua sacola','/checkout':'Checkout demonstrativo','/pedidos':'Pedidos simulados','/sobre':'A marca','/conta':'Minha conta','/minha-conta':'Visitante Demo','/campanha':'Street Campaign'})[route.path];
+  const title=route.path.startsWith('/admin')?'LT Axis / Admin':product?product.name:route.path.startsWith('/loja')?'Coleção / Drop 001':route.path.startsWith('/pedido-confirmado/')?'Pedido simulado confirmado':route.path.startsWith('/pedidos/')?'Detalhes da simulação':({'/favoritos':'Favoritos','/sacola':'Sua sacola','/checkout':'Checkout demonstrativo','/pedidos':'Pedidos simulados','/sobre':'A marca','/conta':'Minha conta','/minha-conta':'Visitante Demo','/campanha':'Street Campaign'})[route.path];
   document.title=title?`${title} — Linha Tênue`:'Linha Tênue — Sem padrão. Sem limites.';
   document.querySelector('meta[name="description"]')?.setAttribute('content',product?.description||'Linha Tênue. Streetwear autoral, Boxy Fit, Essentials e denim. Loja conceitual com identidade LT Axis.');
  },[route.path,product]);
+ const admin=route.path==='/admin'||route.path.startsWith('/admin/');
  let view;
- if(route.path==='/')view=<main><Home goCategory={category=>navigate(categoryHref(category))}/></main>;
+ if(admin)view=<AdminApp route={route}/>;
+ else if(route.path==='/')view=<main><Home goCategory={category=>navigate(categoryHref(category))}/></main>;
  else if(route.path==='/loja'||route.path.startsWith('/loja/'))view=<Shop route={route}/>;
  else if(product)view=<Product key={product.id} product={product}/>;
  else if(route.path==='/sacola')view=<Cart/>;
@@ -58,6 +61,6 @@ function App(){
  else if(route.path==='/campanha')view=<Campaign/>;
  else if(route.path==='/conta'||route.path==='/minha-conta')view=<Account route={route}/>;
  else view=<main className="section not-found"><span className="eyebrow">404 / FORA DA LINHA</span><h1>ESSA PEÇA<br/>NÃO ESTÁ AQUI.</h1><a className="button dark" href="#/loja">Voltar à coleção</a></main>;
- return <><SiteHeader route={route}/><div id="main-content" tabIndex={-1}>{view}</div><SiteFooter/><CartDrawer/><QuickView/><LookBuilder/><DemoControls/>{storageFailed&&<p className="storage-note" role="status">O navegador não permitiu salvar os dados. Sacola, favoritos e pedidos ficam disponíveis somente nesta sessão.</p>}{toast&&<div key={toast.key} className={`toast ${toast.type==='error'?'toast-error':''}`} role={toast.type==='error'?'alert':'status'}>{toast.type==='error'?<AlertCircle size={18}/>:<Check size={18}/>}<span>{toast.text}</span><button aria-label="Fechar aviso" onClick={()=>setToast(null)}><X size={16}/></button></div>}</>;
+ return <>{admin?view:<><SiteHeader route={route}/><div id="main-content" tabIndex={-1}>{view}</div><SiteFooter/></>}<CartDrawer/><QuickView/><LookBuilder/><DemoControls/>{recovered&&<p className="recovery-note" role="status">{storageFailed?'Dados locais inválidos recuperados em memória. O navegador não permitiu salvar todos os dados.':'Dados locais inválidos recuperados. A cópia anterior foi preservada na chave lt-recovery-v4.'}</p>}{storageFailed&&<p className="storage-note" role="status">O navegador não permitiu salvar os dados. Sacola, favoritos e pedidos ficam disponíveis somente nesta sessão.</p>}{toast&&<div key={toast.key} className={`toast ${toast.type==='error'?'toast-error':''}`} role={toast.type==='error'?'alert':'status'}>{toast.type==='error'?<AlertCircle size={18}/>:<Check size={18}/>}<span>{toast.text}</span><button aria-label="Fechar aviso" onClick={()=>setToast(null)}><X size={16}/></button></div>}</>;
 }
 createRoot(document.getElementById('root')).render(<StoreProvider><App/></StoreProvider>);

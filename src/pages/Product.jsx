@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {ArrowRight,Check,Heart,Minus,Plus} from 'lucide-react';
-import {products,money} from '../data';
+import {money} from '../data';
 import {getVariant} from '../lib/catalog';
 import {useStore} from '../state/Store';
 import {scrollIntoView} from '../lib/motion';
@@ -12,9 +12,11 @@ import CampaignLabel from '../components/CampaignLabel';
 import {campaignStory} from '../lib/campaign';
 const colorHex={'Preto':'#151515','Azul':'#1d4dff','Grafite':'#555','Off-white':'#e6e0d5'};
 export default function Product({product:p}){
- const {add,favorites,toggleFavorite}=useStore();
- const [color,setColor]=useState(p.color);
- const [size,setSize]=useState('');
+ const {products,add,favorites,toggleFavorite}=useStore();
+ const [selectedColor,setColor]=useState(p.color);
+ const color=p.colors.includes(selectedColor)?selectedColor:p.color;
+ const [selectedSize,setSize]=useState('');
+ const size=p.sizes.includes(selectedSize)?selectedSize:'';
  const [quantity,setQuantity]=useState(1);
  const [error,setError]=useState('');
  const variant=getVariant(p,color,size);

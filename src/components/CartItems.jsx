@@ -1,11 +1,11 @@
 import React from 'react';
 import {Minus,Plus} from 'lucide-react';
-import {products,money} from '../data';
+import {money} from '../data';
 import {getVariant,productHref} from '../lib/catalog';
 import {lineKey} from '../lib/cart';
 import {useStore} from '../state/Store';
 export default function CartItems(){
- const {cart,changeQuantity,remove}=useStore();
+ const {products,cart,changeQuantity,remove}=useStore();
  return <div className="cart-items">{cart.map(line=>{
   const p=products.find(p=>p.id===line.id),key=lineKey(line),variant=getVariant(p,line.color,line.size);
   return <div className="cart-item" key={key}>

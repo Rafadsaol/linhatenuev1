@@ -1,16 +1,17 @@
 import React,{useState} from 'react';
 import {ArrowRight} from 'lucide-react';
-import {products,money} from '../data';
+import {money} from '../data';
 import {looks} from '../lib/looks';
 import {getVariant,productHref} from '../lib/catalog';
 import {useStore} from '../state/Store';
 import Dialog from './Dialog';
 import VariantPicker from './VariantPicker';
 function LookSelection({look}){
- const {addMany,setActiveLook,setCartOpen}=useStore();
- const pieces=look.ids.map(id=>products.find(p=>p.id===id));
- const [selection,setSelection]=useState(()=>pieces.map(p=>({product:p,color:p.color,size:'',chosen:true}))),[error,setError]=useState('');
- const update=(index,patch)=>{setSelection(old=>old.map((item,i)=>i===index?{...item,...patch}:item));setError('')};
+ const {products,addMany,setActiveLook,setCartOpen}=useStore();
+ const pieces=look.ids.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+ const [choices,setSelection]=useState(()=>pieces.map(p=>({product:p,color:p.color,size:'',chosen:true}))),[error,setError]=useState('');
+ const selection=choices.flatMap(item=>{const product=products.find(p=>p.id===item.product.id);return product?[{...item,product,color:product.colors.includes(item.color)?item.color:product.color,size:product.sizes.includes(item.size)?item.size:''}]:[]});
+ const update=(index,patch)=>{const id=selection[index].product.id;setSelection(old=>old.map(item=>item.product.id===id?{...item,...patch}:item));setError('')};
  const chosen=selection.filter(item=>item.chosen);
  function submit(event){
   event.preventDefault();

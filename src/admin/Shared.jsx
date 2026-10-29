@@ -1,0 +1,13 @@
+import React from 'react';
+import {ArrowUpRight,Search,Inbox} from 'lucide-react';
+import Dialog from '../components/Dialog';
+import {statusLabels,sourceLabel} from '../lib/admin/seed';
+export function AdminHeading({eyebrow='LT AXIS / ADMIN',title,description,children}){return <div className="admin-page-heading"><div><span className="admin-eyebrow">{eyebrow}</span><h1>{title}</h1>{description&&<p>{description}</p>}</div><div className="admin-heading-actions">{children}</div></div>}
+export function AdminButton({children,className='',...props}){return <button className={`admin-button ${className}`} {...props}>{children}</button>}
+export function AdminEmpty({text='Nenhum registro nesta seleção.',children}){return <div className="admin-empty"><Inbox size={28}/><h3>{text}</h3><p>Ajuste os filtros ou crie novos dados demonstrativos.</p>{children}</div>}
+export function SearchField({value,onChange,label='Buscar',placeholder='Buscar…'}){return <label className="admin-search"><Search size={17}/><span className="sr-only">{label}</span><input type="search" value={value} onChange={event=>onChange(event.target.value)} placeholder={placeholder}/></label>}
+export function StatusBadge({status}){return <span className={`admin-status status-${status}`}>{statusLabels[status]||({active:'Ativo',hidden:'Oculto'})[status]||status}</span>}
+export function SourceBadge({source}){return <span className={`admin-source source-${source}`}>{sourceLabel(source)}</span>}
+export function ConfirmAction({action,onClose}){return <Dialog open={Boolean(action)} onClose={onClose} title={action?.title||'Confirmar ação'} className="admin-dialog admin-confirm" initialFocus=".admin-cancel">{action&&<><p>{action.description}</p><div className="admin-form-actions"><AdminButton className="secondary admin-cancel" onClick={onClose}>Cancelar</AdminButton><AdminButton className="danger" onClick={()=>{const result=action.run();if(!result?.error)onClose()}}>Confirmar</AdminButton></div></>}</Dialog>}
+export function PeriodFilter({period,setPeriod,source,setSource}){return <div className="admin-period-filters"><label>Período<select value={period} onChange={e=>setPeriod(e.target.value)}><option value="7">7 dias</option><option value="30">30 dias</option><option value="90">90 dias</option><option value="all">Todo o período</option></select></label>{setSource&&<label>Origem<select value={source} onChange={e=>setSource(e.target.value)}><option value="all">Todos os dados demo</option><option value="seed">Exemplos iniciais</option><option value="visitor">Pedidos do visitante</option></select></label>}</div>}
+export function AdminLink({href,children}){return <a className="admin-link" href={href}>{children}<ArrowUpRight size={15}/></a>}

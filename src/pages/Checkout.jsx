@@ -1,6 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {ArrowLeft,ArrowRight,Check,LockKeyhole,MapPin} from 'lucide-react';
-import {products} from '../data';
 import {useStore} from '../state/Store';
 import {navigate} from '../lib/router';
 import {shippingMethods,shippingPrice} from '../lib/shipping';
@@ -13,7 +12,7 @@ import {SnapshotItems} from '../components/OrderRecord';
 import EmptyState from '../components/EmptyState';
 const steps=['Revisão','Entrega','Pagamento demo'];
 export default function Checkout(){
- const {cart,count,totals,preferences,setShipping,submitOrder}=useStore();
+ const {products,cart,count,totals,preferences,setShipping,submitOrder}=useStore();
  const [step,setStep]=useState(0),[payment,setPayment]=useState(''),[error,setError]=useState(''),[submitting,setSubmitting]=useState(false);
  const heading=useRef(null),didMount=useRef(false),submitLock=useRef(false);
  useEffect(()=>{if(didMount.current)heading.current?.focus();didMount.current=true},[step]);

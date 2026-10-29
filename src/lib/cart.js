@@ -6,7 +6,7 @@ export function cleanCart(value,products) {
  for(const item of value){
   if(!item||typeof item!=='object')continue;
   const product=products.find(p=>p.id===Number(item.id));
-  if(!product)continue;
+  if(!product||product.status==='hidden')continue;
   let size=String(item.size);
   if(product.kind==='pants'&&['P','M','G','GG'].includes(size))size=product.sizes[['P','M','G','GG'].indexOf(size)];
   const variant=getVariant(product,item.color,size);
@@ -19,6 +19,7 @@ export function cleanCart(value,products) {
  return lines;
 }
 export function addCartItem(cart,product,color,size,quantity=1) {
+ if(!product||product.status==='hidden')return {error:'Esta peça não está disponível na vitrine.'};
  const variant=getVariant(product,color,size);
  if(!variant)return {error:'Selecione a cor e o tamanho da peça.'};
  if(!variant.stock)return {error:'Esta variante está indisponível na demonstração.'};
@@ -33,7 +34,7 @@ export function addCartSelection(cart,selections){
  let next=cart;
  for(const {product,color,size,quantity=1} of selections){
   const result=addCartItem(next,product,color,size,quantity);
-  if(result.error)return {error:`${product.name}: ${result.error}`};
+  if(result.error)return {error:`${product?.name||'Peça indisponível'}: ${result.error}`};
   next=result.cart;
  }
  return {cart:next};

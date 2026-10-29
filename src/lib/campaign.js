@@ -13,7 +13,7 @@ export function campaignStory(product,color=product?.color){
  const image=color==='Grafite'?streetImages.graphite:color==='Azul'?(product?.audience==='Feminino'&&product?.kind==='tee'?streetImages.core:streetImages.blue):color==='Preto'&&product?.audience==='Feminino'?streetImages.blue:color==='Off-white'&&product?.audience!=='Feminino'?streetImages.core:streetImages.hero;
  return {image,code:'STREET CAMPAIGN / 001',title:product?.kind==='pants'?'LIBERDADE EM CADA MOVIMENTO.':'O CAIMENTO MUDA A PERSPECTIVA.',alt:`Editorial da coleção ${product?.fit||'Linha Tênue'}, com símbolo LT Axis`,copy:'Peças para ocupar o seu espaço. Forma, movimento e identidade em uma mesma frequência.'};
 }
-export function completeLookProducts(product){
- return products.filter(p=>p.id!==product.id&&p.audience===product.audience&&p.kind!==product.kind&&p.variants.some(v=>v.stock>0))
+export function completeLookProducts(product,catalog=products){
+ return catalog.filter(p=>p.id!==product.id&&p.audience===product.audience&&p.kind!==product.kind&&p.variants.some(v=>v.stock>0))
   .sort((a,b)=>Number(b.line==='Boxy Fit')-Number(a.line==='Boxy Fit')||a.id-b.id).slice(0,3);
 }
