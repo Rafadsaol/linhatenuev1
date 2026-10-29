@@ -60,3 +60,29 @@ test('Portuguese accents survive UTF-8 sequences split across network chunks',as
  const bytes=Buffer.from(JSON.stringify({campaign:{...defaultCampaign,title}}));const split=bytes.indexOf(Buffer.from('Ê'))+1;
  const response=await call(handler,{method:'PUT',body:[bytes.subarray(0,split),bytes.subarray(split)]});assert.equal(response.status,200);assert.equal(response.data.campaign.title,title);
 });
+
+test('polling resumes after the API temporarily serves an unavailable page',async t=>{
+ const {handler}=await setup(t);await call(handler,{method:'PUT',value:{campaign:{...defaultCampaign,title:'CONFIGURAÇÃO DO PC.'}}});
+ let unavailable=true,local={...defaultCampaign},status;
+ const client=createCampaignSync({getCampaign:()=>local,onCampaign:c=>local=c,onStatus:s=>status=s,fetcher:(...args)=>unavailable?Promise.resolve(new Response('<html>Reiniciando</html>',{headers:{'content-type':'text/html'}})):bridge(handler)(...args)});t.after(()=>client.stop());
+ await client.poll();assert.equal(status.state,'unavailable');unavailable=false;await client.poll();assert.equal(status.state,'synced');assert.equal(local.title,'CONFIGURAÇÃO DO PC.');
+});
+
+test('queued mobile edits retry when an initially missing API becomes available',async t=>{
+ const {handler}=await setup(t);let unavailable=true,status,local={...defaultCampaign,title:'SALVA PELO CELULAR.'};
+ const client=createCampaignSync({getCampaign:()=>local,onCampaign:c=>local=c,onStatus:s=>status=s,fetcher:(...args)=>unavailable?Promise.resolve(new Response('{}',{status:404,headers:{'content-type':'application/json'}})):bridge(handler)(...args)});t.after(()=>client.stop());
+ client.publish(local);await settle(()=>status?.state==='unavailable');unavailable=false;await client.poll();await settle(()=>status?.state==='synced');assert.equal((await call(handler)).data.campaign.title,'SALVA PELO CELULAR.');
+});
+
+test('a replaced server document with a lower revision is still authoritative',async t=>{
+ let revision=15,local={...defaultCampaign},title='CAMPANHA ANTERIOR.';
+ const client=createCampaignSync({getCampaign:()=>local,onCampaign:c=>local=c,onStatus:()=>{},fetcher:async()=>new Response(JSON.stringify({revision,campaign:{...defaultCampaign,title}}),{headers:{'content-type':'application/json'}})});t.after(()=>client.stop());
+ await client.poll();assert.equal(local.title,title);revision=1;title='CAMPANHA DO SERVIDOR ATUAL.';await client.poll();assert.equal(local.title,title);
+});
+
+test('a delayed poll cannot overwrite an edit that finished publishing while it was in flight',async t=>{
+ let release,status,local={...defaultCampaign,title:'ANTIGA.'};
+ const response=campaign=>new Response(JSON.stringify({revision:1,campaign}),{headers:{'content-type':'application/json'}});
+ const client=createCampaignSync({getCampaign:()=>local,onCampaign:c=>local=c,onStatus:s=>status=s,fetcher:async(url,options)=>options.method==='PUT'?response(JSON.parse(options.body).campaign):new Promise(resolve=>{release=()=>resolve(response({...defaultCampaign,title:'ANTIGA.'}))})});t.after(()=>client.stop());
+ const poll=client.poll();local={...defaultCampaign,title:'EDIÇÃO MAIS RECENTE.'};client.publish(local);await settle(()=>status?.state==='synced');release();await poll;assert.equal(local.title,'EDIÇÃO MAIS RECENTE.');
+});

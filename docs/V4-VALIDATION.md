@@ -52,3 +52,11 @@ Testes de navegador executados nesta entrega, com roteiro registrado neste docum
 - As seis imagens de campanha foram verificadas a 1905 px com alinhamento superior. Vitrine, loja, produto, sobre, campanha e conta foram verificadas de 320 a 2560 px, sem overflow ou recursos ausentes.
 - Editoriais respeitam a proporção original; fotos de produto e looks completos são contidas no quadro. Os looks 01/02/03 usam retratos individuais com os respectivos outfits. O montador de look continua adicionando as duas variantes à sacola no celular.
 - A sincronização compartilhada depende do servidor Node/Vite em execução. Um site publicado apenas como arquivos estáticos mantém o modo local e informa essa condição.
+
+## Correção de sincronização mobile
+
+- A home mobile passou a usar a imagem salva no CMS, assim como a versão desktop. A campanha padrão mantém os dois modelos e os botões alternam o enquadramento na mesma foto.
+- O cliente retoma leitura e envio após a API retornar de uma indisponibilidade, inclusive quando ela havia respondido HTML/404. Revisões reiniciadas no servidor não bloqueiam novas configurações; uma leitura antiga em andamento não sobrepõe um salvamento mais recente.
+- 50 testes automatizados (os 46 anteriores e quatro regressões de recuperação/concorrência), build e validação com dois acessos de origens distintas: textos, topbar, imagem realmente exibida no celular, recarregamento, edição nos dois sentidos e preservação de rascunhos/sacola.
+- A porta padrão do desenvolvimento foi fixada em 3000 com `strictPort`, impedindo que o PC inicie em outra porta silenciosamente enquanto o celular continua no servidor antigo.
+- A sincronização exige que ambos acessem o mesmo servidor Vite com a API ativa; um endereço servido apenas pelo Live Server ou hospedagem estática mantém dados locais.

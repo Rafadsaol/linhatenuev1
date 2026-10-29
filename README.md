@@ -24,7 +24,7 @@ npm.cmd ci
 npm.cmd run dev -- --port 3000
 ```
 
-O servidor informa os endereços Local e Network. Para abrir no celular, use Network com ambos os dispositivos no mesmo Wi-Fi. **A campanha é compartilhada entre os dispositivos conectados ao mesmo servidor**. Catálogo, sacola, favoritos e pedidos continuam pertencendo ao navegador em que foram criados.
+A porta padrão é 3000. Se ela já estiver ocupada, o projeto avisa e não inicia em outra porta silenciosamente. Encerre o servidor anterior antes de iniciar novamente. O servidor informa os endereços Local e Network. Para abrir no celular, use Network com ambos os dispositivos no mesmo Wi-Fi. **A campanha é compartilhada entre os dispositivos conectados ao mesmo servidor**. Catálogo, sacola, favoritos e pedidos continuam pertencendo ao navegador em que foram criados.
 
 ## Campanha no computador e no celular
 
@@ -159,10 +159,10 @@ Nenhuma dependência foi adicionada. Gráficos usam SVG/CSS e controles acessív
 
 ## Validação e limites
 
-**46 testes automatizados** no runner nativo do Node (incluindo os 23 anteriores), build Vite e verificações de navegador. Não há scripts de lint/typecheck configurados nesta stack JavaScript. Consulte o [registro da V4](docs/V4-VALIDATION.md) para os fluxos, larguras e limites de cobertura.
+**50 testes automatizados** no runner nativo do Node (incluindo os 23 anteriores), build Vite e verificações de navegador. Não há scripts de lint/typecheck configurados nesta stack JavaScript. Consulte o [registro da V4](docs/V4-VALIDATION.md) para os fluxos, larguras e limites de cobertura.
 
 O servidor local compartilha apenas a campanha. Não há conta real, senha real, pagamentos, emissão de boletos/QR Code, e-mail, entrega, upload ou serviço pago. Os dados de perfil são fixos e fictícios. Fotografias, acabamento, medidas, prazos e orientações de troca são conceituais. Nenhuma operação gera pedidos em serviços externos.
 
 ## Revisão dos enquadramentos
 
-O banner preserva o topo das imagens de campanha, incluindo em monitores largos. Blocos de editorial usam a proporção original; produtos e retratos completos usam contenção para preservar a peça. O Shop the Look possui fotos individuais: look 01 com o rapaz centralizado, look 02 com a mulher de cropped off-white e look 03 com a mulher de Baby Tee Cobalt. As fotos foram geradas a partir dos editoriais da marca para esta demonstração. No celular, a home usa a foto original com os dois modelos: os botões Masculino e Feminino alternam o enquadramento na mesma imagem. A imagem de campanha escolhida no CMS continua sendo usada no desktop.
+O banner preserva o topo das imagens de campanha, incluindo em monitores largos. Blocos de editorial usam a proporção original; produtos e retratos completos usam contenção para preservar a peça. O Shop the Look possui fotos individuais: look 01 com o rapaz centralizado, look 02 com a mulher de cropped off-white e look 03 com a mulher de Baby Tee Cobalt. As fotos foram geradas a partir dos editoriais da marca para esta demonstração. A foto escolhida em Campanhas aparece tanto no computador quanto no celular. A campanha padrão usa a foto original com os dois modelos; no celular, os botões Masculino e Feminino alternam o enquadramento na mesma imagem.
