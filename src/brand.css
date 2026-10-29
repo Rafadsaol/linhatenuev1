@@ -1,0 +1,50 @@
+/* LT AXIS — a shared, scalable mark and architectural wordmark. */
+.brand-mark{display:block;width:40px;height:auto;flex-shrink:0;color:inherit}
+.brand-logo{display:inline-flex;align-items:center;gap:15px;flex-shrink:0;color:#f5f5f2;max-width:100%}
+.brand-logo>.brand-mark{width:34px;height:50px}
+.brand-lockup{display:flex;flex-direction:column;gap:9px;min-width:0}
+.brand-wordmark{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:500;letter-spacing:4px;line-height:1.25;white-space:nowrap}
+.brand-signature{font-family:'Space Grotesk',sans-serif;font-size:5px;font-weight:400;letter-spacing:1.6px;line-height:1.4;color:#bdbdbd;white-space:nowrap}
+.brand-logo:hover .brand-wordmark{color:#d5dcff}
+.brand-logo-stacked{flex-direction:column;align-items:flex-start;gap:18px}
+.brand-logo-stacked>.brand-mark{height:86px;width:59px;margin-left:3px}
+.brand-logo-stacked .brand-wordmark{font-size:21px;letter-spacing:5px}
+.brand-logo-stacked .brand-signature{font-size:6px;letter-spacing:1.4px}
+.footer-main>div>.brand-logo{display:inline-flex;margin:0;color:#eee}
+.hero-art>.brand-mark{width:40px;height:59px;margin-top:18px}
+.manifesto-note>.brand-mark{width:45px;height:66px;margin:20px 0}
+.manifesto-image>.manifesto-brand{padding:12px 17px;border-left:2px solid var(--blue)}
+.manifesto-brand>.brand-mark{width:25px;height:37px}
+.social-type>.brand-mark{width:26px;height:38px;margin-top:10px}
+.product-image .garment-visual{background:none}
+.garment-visual img{display:block;width:100%;height:100%;object-fit:contain;filter:none;transform:none;transition:none}
+.product-card:hover .product-image .garment-visual img{transform:none;filter:none}
+.category .garment-visual{background:none}
+.category .garment-visual img,.category:hover .garment-visual img{filter:none;transform:none}
+.category-0 .garment-visual,.category-3 .garment-visual{mix-blend-mode:normal;filter:none;opacity:1}
+.brand-identity{padding:50px 6%;background:#eeece6;color:#111;border-block:1px solid #b5b4ad}
+.identity-heading,.identity-bottom{display:flex;justify-content:space-between;gap:20px;font-size:7px;letter-spacing:1.5px;line-height:1.8}
+.identity-heading{padding-bottom:20px;border-bottom:1px solid #bdbbb3}
+.identity-heading .eyebrow{margin:0;font-size:7px}
+.identity-board{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7%;padding:50px 0}
+.identity-symbol{display:flex;flex-direction:column;gap:24px;align-items:center;border-right:1px solid #c7c5bc;padding:15px 10%}
+.identity-symbol>.brand-mark{width:150px;height:220px}
+.identity-symbol>span{font-size:7px;letter-spacing:3px}
+.identity-copy>.brand-wordmark{font-size:22px;letter-spacing:6px;display:block;margin-bottom:30px}
+.identity-copy h2{font-size:53px;line-height:.95}
+.identity-copy p{font-size:12px;line-height:1.9;color:#666;max-width:350px;margin:23px 0}
+.identity-principles{display:flex;gap:32px;margin-top:30px}
+.identity-principles>span{display:flex;flex-direction:column;justify-content:space-between;gap:12px;font-size:6px;letter-spacing:1.5px;color:#777}
+.identity-principles b{font-family:Georgia,serif;font-size:36px;font-weight:400;color:#333;line-height:1}
+.identity-principles i{display:block;width:3px;height:36px;background:var(--blue);margin-left:15px}
+.identity-bottom{padding-top:20px;border-top:1px solid #bdbbb3;color:#666;font-size:6px}
+.checkout-brand{width:34px;height:50px;margin-bottom:20px}
+header nav{gap:28px}
+@media(max-width:1100px) and (min-width:641px){.brand-logo{gap:10px}.brand-logo>.brand-mark{width:28px;height:41px}.brand-wordmark{font-size:15px;letter-spacing:3px}.brand-signature{font-size:4px;letter-spacing:1.1px}header nav{gap:18px}.header-actions{gap:15px}.bag span{font-size:8px}}
+@media(max-width:640px){.brand-logo{gap:10px}.brand-logo>.brand-mark{width:25px;height:37px}.brand-wordmark{font-size:13px;letter-spacing:2.7px}.brand-lockup{gap:6px}.brand-signature{font-size:3.6px;letter-spacing:.8px}.brand-logo-stacked>.brand-mark{width:46px;height:68px}.brand-logo-stacked .brand-wordmark{font-size:19px;letter-spacing:4px}.brand-logo-stacked .brand-signature{font-size:5px;letter-spacing:1px}.hero-art>.brand-mark{width:27px;height:40px;margin-top:12px}.brand-identity{padding:30px 6%}.identity-heading,.identity-heading .eyebrow{font-size:5px;letter-spacing:1px}.identity-board{grid-template-columns:1fr;padding:30px 0;gap:30px}.identity-symbol{border:0;border-bottom:1px solid #c7c5bc;padding:15px 0 30px}.identity-symbol>.brand-mark{width:115px;height:169px}.identity-copy>.brand-wordmark{font-size:20px;letter-spacing:5px;margin-bottom:25px}.identity-copy h2{font-size:45px}.identity-copy p{font-size:11px}.identity-principles{gap:36px}.identity-bottom{flex-direction:column;gap:8px;font-size:5px}.social-type>.brand-mark{width:23px;height:34px}}
+@media(max-width:360px){header .brand-signature{display:none}header .brand-wordmark{font-size:11px;letter-spacing:2px}header .brand-logo{gap:7px}.header-actions{gap:12px}}
+.social-type>span{font-size:55px}
+@media(max-width:640px){.social-type>span{font-size:48px}}
+.identity-board>*{min-width:0}
+@media(max-width:360px){.about-hero h1{font-size:45px}.identity-copy>.brand-wordmark{font-size:18px;letter-spacing:4px}}
+@media(max-width:640px){.hero-photo{object-position:78% center}}

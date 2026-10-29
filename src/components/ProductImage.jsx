@@ -1,6 +1,5 @@
 import React from 'react';
-/** Each local contact sheet has eight cells; imageIndex selects the garment independently of product IDs. */
-export default function ProductImage({product,decorative=false,zoom=false}) {
- const index=product.imageIndex ?? product.id-1;
- return <div className={`garment-visual${zoom?' garment-zoom':''}`} role={decorative?undefined:'img'} aria-hidden={decorative?true:undefined} aria-label={decorative?undefined:product.name} style={{backgroundImage:`url(${product.image})`,backgroundPosition:`${(index%4)*100/3}% ${index<4?0:100}%`}}/>;
+/** Catalogue and product gallery share the same individual, branded photograph. */
+export default function ProductImage({product,decorative=false}) {
+ return <div className="garment-visual"><img src={product.detailImage} alt={decorative?'':`${product.name} com símbolo LT Axis`} aria-hidden={decorative?true:undefined} width="1086" height="1448" loading="lazy" decoding="async"/></div>;
 }
