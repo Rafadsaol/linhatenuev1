@@ -101,3 +101,24 @@
 }
 /* Keep the rotated editorial note within its section on wide screens. */
 .manifesto { overflow: hidden; }
+/* Refined fits and women's collection. */
+.audience-tabs{display:flex;gap:8px;margin:0 0 24px;flex-wrap:wrap}
+.audience-tabs button{border:1px solid #555;padding:10px 20px;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#bbb}
+.audience-tabs button.active{background:var(--paper);color:#111;border-color:var(--paper)}
+.fit-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.fit-badges span{font-size:8px;letter-spacing:.7px;text-transform:uppercase;border:1px solid #555;padding:7px 10px;color:#ccc}
+.fit-story{display:grid;grid-template-columns:1.2fr 1fr;border-block:1px solid #555;background:#151515;min-height:470px}
+.fit-story-image{min-width:0;min-height:470px;position:relative;overflow:hidden}
+.fit-story-image img{position:absolute;inset:0;object-position:50% 40%}
+.fit-story-copy{padding:60px 10%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.fit-story h2{font-size:80px;line-height:.9}
+.fit-story p{font-size:12px;line-height:1.9;color:#bbb;margin:24px 0;max-width:370px}
+.fit-story .eyebrow{color:#aaa;font-size:8px}
+.fit-points{margin-top:28px;display:flex;flex-direction:column;gap:9px;font-size:7px;letter-spacing:1px;color:#aaa}
+.fit-launch .section-title h2,.women-launch .section-title h2{white-space:normal}
+.women-launch{background:#e7e5de;color:#111;border-top:1px solid #aaa}
+.women-launch .eyebrow{color:#555}.women-launch .product-info p{color:#555}
+.women-intro{font-size:12px;color:#555;line-height:1.8;margin:-4px 0 28px;max-width:590px}
+.women-launch .text-link{color:#111;border-color:#777}.women-launch .text-link:hover{color:white}
+@media(max-width:900px){.fit-story{grid-template-columns:1fr 1fr;min-height:400px}.fit-story-image{min-height:400px}.fit-story-copy{padding:35px 8%}.fit-story h2{font-size:65px}.fit-story p{font-size:11px}.fit-story .eyebrow{font-size:6px}}
+@media(max-width:640px){.audience-tabs{gap:7px;margin-bottom:20px}.audience-tabs button{padding:9px 13px;font-size:8px}.fit-story{grid-template-columns:1fr}.fit-story-image{min-height:330px}.fit-story-image img{object-position:center}.fit-story-copy{padding:32px 6%}.fit-story h2{font-size:65px}.fit-story p{font-size:11px;margin:20px 0;max-width:310px}.fit-points{margin-top:22px}.fit-story .eyebrow{font-size:7px}.women-launch .section-title,.fit-launch .section-title{gap:12px}.fit-launch .section-title h2,.women-launch .section-title h2{font-size:33px;max-width:215px}.women-intro{font-size:10px;margin:0 0 22px}.fit-badges{gap:6px}.fit-badges span{font-size:7px;padding:6px 8px}.product-info p{line-height:1.7}}
