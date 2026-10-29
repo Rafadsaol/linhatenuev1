@@ -1,6 +1,6 @@
 # Linha Tênue®
 
-V1 conceitual de e-commerce streetwear em React 19, Vite 6 e Lucide. Layout responsivo underground editorial em preto, papel off-white e azul elétrico. Camisetas boxy de estampa gráfica, jeans baggy, campanha urbana e texturas de impressão. Tipografia Barlow Condensed e Space Grotesk incluída localmente com @fontsource.
+V1 conceitual de e-commerce streetwear em React 19, Vite 6 e Lucide. Layout responsivo underground editorial em preto, papel off-white e azul elétrico. Camisetas boxy minimalistas com aplicação pequena da logomarca Linha Tênue, jeans baggy, campanha urbana e texturas de impressão. Tipografia Barlow Condensed e Space Grotesk incluída localmente com @fontsource.
 
 ## Desenvolvimento
 
@@ -30,4 +30,4 @@ npm run preview
 
 Não há backend, autenticação, inscrição em newsletter, estoque remoto, pagamentos nem envio de pedidos. A tela de conta não transmite nem armazena credenciais. A sacola é local a cada navegador. O checkout explicita o caráter conceitual.
 
-As imagens em `public/images/` foram geradas para a direção visual desta loja conceitual e não representam produtos físicos. A prancha `collection.png` contém as oito peças em uma grade regular 4 × 2, enquadradas pelo componente ProductImage. Campanha e manifesto usam imagens próprias desta V1. Imagens e fontes são servidas localmente, sem dependência de Unsplash ou Google Fonts. Substitua por fotografias e especificações reais antes de uma operação comercial.
+As imagens em `public/images/` foram geradas para a direção visual desta loja conceitual e não representam produtos físicos. A prancha `collection.png` contém as oito peças em uma grade regular 4 × 2, enquadradas pelo componente ProductImage. As camisetas exibem somente a logomarca discreta no peito; a imagem de costas aplica a marca abaixo da gola. Campanha e manifesto usam imagens próprias desta V1. Imagens e fontes são servidas localmente, sem dependência de Unsplash ou Google Fonts. Substitua por fotografias e especificações reais antes de uma operação comercial.
