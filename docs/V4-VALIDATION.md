@@ -60,3 +60,9 @@ Testes de navegador executados nesta entrega, com roteiro registrado neste docum
 - 50 testes automatizados (os 46 anteriores e quatro regressões de recuperação/concorrência), build e validação com dois acessos de origens distintas: textos, topbar, imagem realmente exibida no celular, recarregamento, edição nos dois sentidos e preservação de rascunhos/sacola.
 - A porta padrão do desenvolvimento foi fixada em 3000 com `strictPort`, impedindo que o PC inicie em outra porta silenciosamente enquanto o celular continua no servidor antigo.
 - A sincronização exige que ambos acessem o mesmo servidor Vite com a API ativa; um endereço servido apenas pelo Live Server ou hospedagem estática mantém dados locais.
+
+## Enquadramento dos outfits no celular
+
+- Cada foto de campanha com os dois modelos possui seus próprios pontos de foco, usados para centralizar o modelo selecionado considerando a proporção real do banner. O cálculo acompanha carregamento, troca de campanha e redimensionamento, sem substituir a imagem sincronizada.
+- As descrições acessíveis acompanham os outfits da foto selecionada. Fotos com apenas um modelo não exibem alternância Masculino/Feminino.
+- Validação de navegador com as três fotos em dupla nas larguras 320, 390, 430, 640 e 767 px: posição real dos modelos, mudança de enquadramento, imagem preservada e ausência de overflow. As outras três fotos não mostram controles inconsistentes; a composição desktop foi preservada.

@@ -6,7 +6,8 @@ import ProductCard from '../components/ProductCard';
 import ProductImage from '../components/ProductImage';
 import {BrandMark} from '../components/BrandLogo';
 import CampaignLabel from '../components/CampaignLabel';
-import {streetImages} from '../lib/campaign';
+import CampaignHeroImage from '../components/CampaignHeroImage';
+import {streetImages,campaignOutfits} from '../lib/campaign';
 import Lookbook from '../components/Lookbook';
 import {scrollIntoView} from '../lib/motion';
 import {productHref,selectProducts,defaultFilters} from '../lib/catalog';
@@ -21,6 +22,7 @@ export default function Home({goCategory}){
  const featured=[...products.filter(p=>p.featured),...campaign.featuredProductIds.map(id=>products.find(p=>p.id===id)).filter(Boolean)];
  const dropProducts=[...new Map(featured.map(p=>[p.id,p])).values()];
  const [outfit,setOutfit]=useState('masculino');
+ const outfits=campaignOutfits[campaign.image];
  useEffect(()=>{
   if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.08});
@@ -30,10 +32,10 @@ export default function Home({goCategory}){
  },[]);
  return <>
  <section className="hero street-hero" data-outfit={outfit}>
-  <img id="campaign-hero-photo" className="hero-photo" src={campaign.image} alt="Campanha Linha Tênue — modelagem e identidade LT Axis" fetchPriority="high"/>
+  <CampaignHeroImage src={campaign.image} focusX={outfits?.[outfit].x??.52}/>
   <div className="hero-shade"/>
   <div className="hero-top"><span>LINHA TÊNUE / STREET CAMPAIGN</span><span>VOL. 001 — BRASIL</span></div>
-  <div className="hero-outfit-preview"><span>OUTFIT / PREVIEW</span><div role="group" aria-label="Prévia dos outfits da campanha">{['masculino','feminino'].map(value=><button key={value} type="button" aria-controls="campaign-hero-photo" aria-pressed={outfit===value} onClick={()=>setOutfit(value)}>{value==='masculino'?'Masculino':'Feminino'}</button>)}</div><p className="sr-only" role="status">{outfit==='masculino'?'Outfit masculino: Boxy Fit Black e Baggy Washed Denim.':'Outfit feminino: Boxy Cropped Off-White e Wide Leg High-Waist.'}</p></div>
+  {outfits&&<div className="hero-outfit-preview"><span>OUTFIT / PREVIEW</span><div role="group" aria-label="Prévia dos outfits da campanha">{['masculino','feminino'].map(value=><button key={value} type="button" aria-controls="campaign-hero-photo" aria-pressed={outfit===value} onClick={()=>setOutfit(value)}>{value==='masculino'?'Masculino':'Feminino'}</button>)}</div><p className="sr-only" role="status">Outfit {outfit}: {outfits[outfit].description}</p></div>}
   <div className="hero-copy"><CampaignLabel code="THE FIRST LINE">{campaign.drop}</CampaignLabel><h1>{campaign.title.split('\n').map((line,index,lines)=><React.Fragment key={index}>{index>0&&<br/>}{index===lines.length-1&&line.endsWith('.')?<>{line.slice(0,-1)}<span className="hero-period">.</span></>:line}</React.Fragment>)}</h1><p>{campaign.subtitle}</p><div className="hero-ctas"><a className="button light" href={'#'+campaign.buttonLink}>{campaign.buttonText} <ArrowRight size={18}/></a><a className="hero-campaign-link" href="#/campanha">Ver campanha <ArrowUpRight size={18}/></a></div></div>
   <div className="hero-art" aria-hidden="true"><BrandMark/><span>FORM.<br/>STREET.<br/>CULTURE.</span></div>
   <div className="campaign-strip" aria-label="Explore o drop">{products.slice(0,3).map((piece,i)=><a key={i} href={'#'+productHref(piece)} aria-label={piece.name}><ProductImage product={piece} decorative/></a>)}<span>001 / THE FIRST LINE</span></div>

@@ -22,8 +22,7 @@
 .campaign-sync-state.sync-synced{border-left-color:#37614f;background:#eaf1ed;color:#37614f}
 .campaign-sync-state.sync-offline,.campaign-sync-state.sync-unavailable{border-left-color:#80652c;background:#f7f2e7;color:#80652c}
 @media(max-width:767px){
- .street-hero .hero-photo{object-position:66% top}
- .street-hero[data-outfit="feminino"] .hero-photo{object-position:100% top}
+ .street-hero .hero-photo{object-position:var(--hero-mobile-position,center top)}
  .street-about .about-hero>img,.campaign-editorial>img{object-position:70% top}
  .social-grid>div,.social-grid>div:nth-child(4){height:auto;aspect-ratio:4/5}
 }

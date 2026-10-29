@@ -7,6 +7,20 @@ export const streetImages={
  blueprint:'/images/street/blueprint.png',
  study:'/images/street/study.png',
 };
+export const campaignOutfits={
+ [streetImages.hero]:{
+  masculino:{x:.62,description:'Boxy Fit Black e Baggy Washed Denim.'},
+  feminino:{x:.83,description:'Boxy Cropped Off-White e Wide Leg High-Waist.'}
+ },
+ [streetImages.core]:{
+  masculino:{x:.30,description:'Boxy Fit Off-White e denim claro.'},
+  feminino:{x:.70,description:'Baby Tee Cobalt e Wide Leg High-Waist.'}
+ },
+ [streetImages.blue]:{
+  masculino:{x:.33,description:'Boxy Fit Cobalt e Baggy Washed Denim.'},
+  feminino:{x:.59,description:'Boxy Cropped Black e Wide Leg High-Waist.'}
+ }
+};
 export function campaignStory(product,color=product?.color){
  if(product?.id===17)return {image:streetImages.blueprint,code:'ART EDITION / 017',title:'FORMA QUE VIRA EXPRESSÃO.',alt:'Boxy Axis Blueprint em uso, com estampa arquitetônica azul',copy:'O desenho de construção do LT Axis sai do papel e ganha a rua.'};
  if(product?.id===18)return {image:streetImages.study,code:'ART EDITION / 018',title:'O IMPACTO ESTÁ NO DETALHE.',alt:'Boxy Axis Study em uso, com estampa tonal e eixo azul',copy:'Uma nova leitura do básico. Linhas sutis, presença que permanece.'};

@@ -66,8 +66,7 @@
  .hero-outfit-preview button+button{border-left:1px solid #ffffff65}
  .hero-outfit-preview button[aria-pressed="true"]{background:var(--paper);color:#111}
  .hero-outfit-preview button[aria-pressed="true"]::after{content:'';height:2px;position:absolute;bottom:0;left:18px;right:18px;background:var(--blue)}
- .street-hero .hero-photo{object-position:66% top;transition:object-position .45s ease}
- .street-hero[data-outfit="feminino"] .hero-photo{object-position:100% top}
+ .street-hero .hero-photo{transition:object-position .45s ease}
  .street-hero .hero-copy{bottom:115px}
  .street-hero .hero-bottom{display:none}
 }
