@@ -1,0 +1,16 @@
+import React,{useState} from 'react';
+import {ArrowUpRight,ChevronDown,Heart,Menu,Search,ShoppingBag,User,ArrowRight} from 'lucide-react';
+import BrandLogo from './BrandLogo';
+import Dialog from './Dialog';
+import {useStore} from '../state/Store';
+import {navigate} from '../lib/router';
+import {defaultFilters,filtersHref} from '../lib/catalog';
+const links=[['Loja','/loja'],['Drop 001','/loja/drops'],['Feminino','/loja?colecao=Feminino'],['A marca','/sobre']];
+export default function SiteHeader({route}){
+ const {count,favorites,setCartOpen}=useStore();
+ const [menu,setMenu]=useState(false),[search,setSearch]=useState(false),[query,setQuery]=useState('');
+ return <><a href="#main-content" className="skip-link" onClick={e=>{e.preventDefault();document.getElementById('main-content')?.focus()}}>Ir para o conteúdo</a><div className="topbar"><span>FRETE GRÁTIS ACIMA DE R$ 299</span><span>TROCA EM ATÉ 30 DIAS</span><span><i/> DROP LIMITADO — LOJA CONCEITUAL</span></div><header><BrandLogo/><nav aria-label="Navegação principal">{links.map(([label,path])=><a href={'#'+path} key={label} className={route.path===path?'current':''}>{label}{label==='Loja'&&<ChevronDown size={12}/>}</a>)}</nav><div className="header-actions"><button className="icon-button" aria-label="Buscar produtos" aria-haspopup="dialog" onClick={()=>setSearch(true)}><Search size={20}/></button><a className="header-favorites icon-button" href="#/favoritos" aria-label={`Favoritos (${favorites.length})`}><Heart size={20}/>{favorites.length>0&&<span className="header-badge">{favorites.length}</span>}</a><a className="account-link icon-button" href="#/conta" aria-label="Minha conta"><User size={20}/></a><button className="bag" onClick={()=>setCartOpen(true)} aria-label={`Abrir sacola com ${count} peças`} aria-haspopup="dialog"><ShoppingBag size={20}/><span>SACOLA ({count})</span><b className="mobile-bag-count">{count}</b></button><button className="mobile-toggle icon-button" aria-label="Abrir menu" aria-haspopup="dialog" aria-expanded={menu} onClick={()=>setMenu(true)}><Menu size={23}/></button></div></header>
+ <Dialog open={menu} onClose={()=>setMenu(false)} title="Explorar" drawer className="mobile-menu-dialog"><nav className="mobile-menu-links" aria-label="Menu mobile"><button className="mobile-search-link" onClick={()=>{setMenu(false);setSearch(true)}}>Buscar peças <Search size={20}/></button>{[...links,['Favoritos','/favoritos'],['Minha sacola','/sacola'],['Minha conta','/conta']].map(([label,path])=><a href={'#'+path} key={label} onClick={()=>setMenu(false)}>{label}<ArrowUpRight size={22}/></a>)}</nav><div className="menu-signature"><BrandLogo stacked/></div></Dialog>
+ <Dialog open={search} onClose={()=>setSearch(false)} title="Encontre sua frequência" className="search-dialog" initialFocus="input"><form onSubmit={e=>{e.preventDefault();navigate(filtersHref({...defaultFilters,q:query}));setSearch(false)}}><label htmlFor="global-search">Busque por nome, categoria ou detalhe</label><div className="global-search-row"><input id="global-search" type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Boxy, denim, cintura alta..."/><button className="icon-button" aria-label="Pesquisar no catálogo"><ArrowRight size={22}/></button></div></form><p>DROP 001 / BOXY FIT / FEMININO / ESSENTIALS</p></Dialog>
+ </>;
+}

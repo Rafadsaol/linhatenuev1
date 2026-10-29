@@ -1,0 +1,4 @@
+import React from 'react';
+import {ArrowRight} from 'lucide-react';
+import {useStore} from '../state/Store';
+export default function Account(){const {notify}=useStore();return <main className="section account"><span className="eyebrow">BEM-VINDO À SUA FREQUÊNCIA</span><h1>MINHA CONTA<span className="electric">.</span></h1><p>Seu espaço na Linha Tênue.</p><form onSubmit={e=>{e.preventDefault();e.currentTarget.reset();notify('Área de conta demonstrativa. Nenhuma credencial foi enviada ou armazenada.')}}><label>E-mail<input type="email" placeholder="seu@email.com" required autoComplete="off"/></label><label>Senha<input type="password" placeholder="Sua senha" minLength={6} required autoComplete="off"/></label><button className="button dark full">Entrar <ArrowRight size={18}/></button></form><p className="subtle">Interface conceitual · nenhuma credencial é enviada ou armazenada.</p></main>}
