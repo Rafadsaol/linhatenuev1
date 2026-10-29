@@ -30,7 +30,7 @@ export default function Home({goCategory}){
  },[]);
  return <>
  <section className="hero street-hero" data-outfit={outfit}>
-  <picture><source media="(max-width: 767px)" srcSet={outfit==='feminino'?'/images/looks/look-02.png':campaign.image}/><img id="campaign-hero-photo" className="hero-photo" src={campaign.image} alt="Campanha Linha Tênue — modelagem e identidade LT Axis" fetchPriority="high"/></picture>
+  <picture><source media="(max-width: 767px)" srcSet={streetImages.hero}/><img id="campaign-hero-photo" className="hero-photo" src={campaign.image} alt="Campanha Linha Tênue — modelagem e identidade LT Axis" fetchPriority="high"/></picture>
   <div className="hero-shade"/>
   <div className="hero-top"><span>LINHA TÊNUE / STREET CAMPAIGN</span><span>VOL. 001 — BRASIL</span></div>
   <div className="hero-outfit-preview"><span>OUTFIT / PREVIEW</span><div role="group" aria-label="Prévia dos outfits da campanha">{['masculino','feminino'].map(value=><button key={value} type="button" aria-controls="campaign-hero-photo" aria-pressed={outfit===value} onClick={()=>setOutfit(value)}>{value==='masculino'?'Masculino':'Feminino'}</button>)}</div><p className="sr-only" role="status">{outfit==='masculino'?'Outfit masculino: Boxy Fit Black e Baggy Washed Denim.':'Outfit feminino: Boxy Cropped Off-White e Wide Leg High-Waist.'}</p></div>
