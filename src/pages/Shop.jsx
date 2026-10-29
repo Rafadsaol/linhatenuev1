@@ -1,10 +1,13 @@
 import React,{useState} from 'react';
 import {ArrowRight,Search,SlidersHorizontal,X} from 'lucide-react';
-import {products,lifestyle} from '../data';
+import {products} from '../data';
 import {categoryOptions,defaultFilters,filtersHref,parseFilters,selectProducts} from '../lib/catalog';
 import {navigate} from '../lib/router';
 import Dialog from '../components/Dialog';
 import ProductCard from '../components/ProductCard';
+import CampaignLabel from '../components/CampaignLabel';
+import {CatalogCampaign} from '../components/CampaignEditorial';
+import {streetImages} from '../lib/campaign';
 const colors=['Preto','Off-white','Azul','Grafite'];
 const colorHex={'Preto':'#111','Off-white':'#e6e0d5','Azul':'#1d4dff','Grafite':'#666'};
 function FilterPanel({filters,update,prefix}){
@@ -28,19 +31,20 @@ export default function Shop({route}){
   const path='category' in patch?(next.category==='todos'?'/loja':`/loja/${next.category}`):route.path;
   navigate(filtersHref(next,path),options);
  };
+ const editorialAfter=results.length>=4?Math.min(6,Math.ceil(results.length/2)):0;
  const clear=()=>navigate('/loja');
  const active=Object.keys(defaultFilters).filter(k=>k!=='sort'&&String(filters[k])!==String(defaultFilters[k]));
  const chipLabels={q:`Busca: ${filters.q}`,category:categoryOptions.find(([key])=>key===filters.category)?.[1],audience:filters.audience,size:`Tamanho ${filters.size}`,color:filters.color,min:`A partir de R$ ${filters.min}`,max:`Até R$ ${filters.max}`};
  const title=filters.category==='todos'?(filters.audience==='Feminino'?'FEMININO.':'FORA DO PADRÃO.'):categoryOptions.find(([key])=>key===filters.category)?.[1];
  return <main className="section shop v2-shop">
   <div className="breadcrumb"><a href="#/">Início</a> / Loja {filters.category!=='todos'&&`/ ${title}`}</div>
-  <div className="shop-banner"><img src={lifestyle} alt="Editorial Linha Tênue com símbolo LT Axis"/><div><span className="eyebrow">DROP 001 / LINHA TÊNUE</span><h1>{title}</h1></div><span className="shop-mark" aria-hidden="true">✕✕</span></div>
+  <div className="shop-banner"><img src={streetImages.hero} alt="Editorial Linha Tênue com símbolo LT Axis"/><div><CampaignLabel code="COLLECTION / 001">STREET CAMPAIGN</CampaignLabel><h1>{title}</h1></div><span className="shop-mark" aria-hidden="true">001</span></div>
   <div className="catalog-layout"><aside className="catalog-sidebar" aria-label="Filtros do catálogo"><div className="sidebar-heading"><span><SlidersHorizontal size={16}/>FILTROS</span><button onClick={clear}>Limpar</button></div><FilterPanel filters={filters} update={update} prefix="desktop"/></aside>
    <section className="catalog-content" aria-label="Produtos do catálogo">
     <form className="catalog-search" role="search" onSubmit={e=>e.preventDefault()}><Search size={18}/><label className="sr-only" htmlFor="catalog-search">Buscar no catálogo</label><input id="catalog-search" value={filters.q} onChange={e=>update({q:e.target.value},{replace:true})} placeholder="Busque por peça, categoria ou detalhe" type="search"/>{filters.q&&<button type="button" aria-label="Limpar busca" onClick={()=>update({q:''})}><X size={17}/></button>}</form>
     <div className="catalog-toolbar"><button className="mobile-filter-trigger" onClick={()=>setDrawer(true)} aria-haspopup="dialog"><SlidersHorizontal size={17}/>Filtrar {active.length>0&&`(${active.length})`}</button><p role="status" className="result-count">{results.length} {results.length===1?'peça encontrada':'peças encontradas'}</p><label className="catalog-sort">Ordenar<select aria-label="Ordenar produtos" value={filters.sort} onChange={e=>update({sort:e.target.value})}><option value="novidades">Novidades</option><option value="menor-preco">Menor preço</option><option value="maior-preco">Maior preço</option><option value="nome">Nome A–Z</option></select></label></div>
     {active.length>0&&<div className="active-filters">{active.map(key=><button key={key} onClick={()=>update({[key]:defaultFilters[key]})} aria-label={`Remover filtro ${chipLabels[key]}`}>{chipLabels[key]}<X size={12}/></button>)}<button className="clear-all" onClick={clear}>Limpar filtros</button></div>}
-    <div className="product-grid catalog-grid" key={`${filters.category}-${filters.audience}`}>{results.map(p=><ProductCard key={p.id} p={p}/>)}</div>
+    <div className="product-grid catalog-grid" key={`${filters.category}-${filters.audience}`}>{results.flatMap((p,index)=>[<ProductCard key={p.id} p={p}/>,...(index+1===editorialAfter?[<CatalogCampaign key="campaign-interlude"/>]:[])])}</div>
     {!results.length&&<div className="empty catalog-empty"><Search size={32}/><h2>NENHUMA PEÇA<br/>NESSA FREQUÊNCIA.</h2><p>Experimente outra busca ou ajuste os filtros.</p><button className="button dark" onClick={clear}>Limpar filtros <ArrowRight size={18}/></button></div>}
    </section>
   </div>

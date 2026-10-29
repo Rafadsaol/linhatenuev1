@@ -1,6 +1,22 @@
-# Linha Tênue — V2
+# Linha Tênue — V2 / Street Campaign
 
 E-commerce conceitual de streetwear, construído sobre a V1 existente em **React 19 + Vite 6**. Mantém a identidade **LT Axis**, as coleções originais, Boxy Fit e Feminino, as fotografias individuais, o cupom demonstrativo e as páginas institucionais. A V2 adiciona catálogo compartilhável, favoritos, variantes com estoque fictício e sacola lateral.
+
+## Street Campaign — refinamento V2.1
+
+A V2 foi refinada sem recriar o projeto ou alterar os 18 produtos e suas variantes. A direção Street Campaign usa fotografia urbana, composições assimétricas, superfícies em preto e off-white e o eixo vertical azul como assinatura.
+
+- Home com hero de campanha e CTAs “Explorar coleção” e “Ver campanha”, categorias, Shop the Drop, manifesto, Boxy Fit, Feminino, lookbook e comunidade.
+- Header sticky com destaque de navegação e menu mobile numerado, mantendo os drawers acessíveis.
+- Catálogo com hero interno e banner editorial no meio do grid, sem alterar busca, filtros, ordenação, URLs ou favoritos. O banner não entra no contador de produtos.
+- Produto em superfície off-white, detalhes e entrega expansíveis, sugestões “Complete o look” que respeitam o público e a disponibilidade fictícia, e editorial final correspondente à peça/cor.
+- Sacola com hierarquia refinada e progresso ilustrativo para frete grátis, preservando cupom, quantidades, totais e persistência.
+- Sobre como manifesto visual, com origem, identidade, perspectiva, liberdade e a filosofia LT Axis.
+- Minha conta com acesso, cadastro visual com confirmação de senha, pedidos demonstrativos, favoritos reais do navegador e formulário ilustrativo de dados. Nenhum desses formulários envia ou grava dados pessoais.
+
+`#/campanha` reúne a campanha e seus looks. As áreas da conta podem ser abertas diretamente: `#/conta?area=pedidos`, `#/conta?area=favoritos` e `#/conta?area=dados`. A navegação das abas funciona com teclado e histórico da URL.
+
+As novas imagens em `public/images/street/` são editoriais conceituais gerados para o portfólio. As fotos frontais de produto e os dados da V2 foram mantidos. `CampaignLabel`, `CampaignEditorial` e `CompleteLook` são reutilizáveis; `lib/campaign.js` separa a curadoria visual da lógica comercial e `campaign.css` organiza a apresentação desta direção.
 
 ## Executar
 
@@ -19,7 +35,7 @@ npm run build
 npm run preview
 ```
 
-Os 11 testes de lógica usam o runner nativo do Node, sem dependências de teste. Não há scripts de lint ou TypeScript configurados: a stack JavaScript da V1 foi preservada. O build valida os módulos React com Vite.
+Os 13 testes de lógica usam o runner nativo do Node, sem dependências de teste. Não há scripts de lint ou TypeScript configurados: a stack JavaScript da V1 foi preservada. O build valida os módulos React com Vite.
 
 ## Rotas
 
@@ -38,8 +54,9 @@ A navegação mantém o padrão de hash da V1, compatível com hospedagem estát
 | `#/produto/boxy-fit-black` | Produto por slug |
 | `#/favoritos` | Peças salvas no navegador |
 | `#/sacola` | Sacola completa, cupom e checkout ilustrativo |
-| `#/sobre` | História e identidade LT Axis |
-| `#/conta` | Interface de conta demonstrativa |
+| `#/campanha` | Street Campaign, editoriais e looks clicáveis |
+| `#/sobre` | Manifesto visual e identidade LT Axis |
+| `#/conta` | Acesso, cadastro, pedidos, favoritos e dados demonstrativos |
 
 Os links numéricos antigos, como `#/produto/1`, continuam funcionando.
 
@@ -86,13 +103,15 @@ src/
   lib/cart.js                # validação, migração, quantidades e centavos
   lib/router.js              # navegação por hash e histórico
   lib/motion.js              # rolagem respeitando movimento reduzido
+  lib/campaign.js            # curadoria de editoriais e sugestões de look
   state/Store.jsx            # sacola, favoritos, persistência e feedback
   components/                # marca, cards, galeria, drawers, header, footer e lookbook
   pages/                     # Home, Shop, Product, Favorites, Cart, About e Account
   style.css / street.css     # base visual preservada da V1
   brand.css                  # identidade LT Axis
   v2.css                     # aprimoramentos e responsividade da V2
-tests/                       # 11 testes de filtros, catálogo, variantes e sacola
+  campaign.css               # direção visual Street Campaign
+tests/                       # 13 testes de filtros, catálogo, variantes e sacola
 ```
 
 `BrandLogo` e `BrandMark` reutilizam o monograma arquitetônico inspirado na referência fornecida. Os vetores substituíveis estão em `public/brand/`. Não se usa a prancha de apresentação como logo. A identidade se aplica ao header, favicon, footer, coleções e produtos.
@@ -105,6 +124,6 @@ Títulos e descrições da página são atualizados por rota. A aplicação é u
 
 ## Limites e V3
 
-**Tudo é demonstrativo.** Não há estoque real, compra, pagamento, coleta de dados financeiros, envio de pedidos, autenticação, cadastro de newsletter ou atendimento comercial. A conta não transmite nem armazena credenciais. As medidas e orientações são ilustrativas.
+**Tudo é demonstrativo.** Não há estoque real, compra, pagamento, coleta de dados financeiros, envio de pedidos, autenticação, cadastro de newsletter ou atendimento comercial. A conta não transmite nem armazena credenciais ou dados de cadastro/perfil. O painel de pedidos não cria pedidos e os favoritos da conta refletem apenas a seleção local do navegador. As medidas e orientações são ilustrativas.
 
 Uma V3 poderá integrar catálogo e estoque reais, autenticação, checkout, painel administrativo e fotografias de produção. Nenhuma dessas integrações foi simulada como se estivesse operacional.

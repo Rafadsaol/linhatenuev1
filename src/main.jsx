@@ -5,6 +5,7 @@ import './style.css';
 import './street.css';
 import './brand.css';
 import './v2.css';
+import './campaign.css';
 import '@fontsource/barlow-condensed/700.css';
 import '@fontsource/barlow-condensed/800.css';
 import '@fontsource/anton/latin-400.css';
@@ -22,6 +23,7 @@ import Cart from './pages/Cart';
 import Favorites from './pages/Favorites';
 import About from './pages/About';
 import Account from './pages/Account';
+import Campaign from './pages/Campaign';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import CartDrawer from './components/CartDrawer';
@@ -32,7 +34,7 @@ function App(){
  const product=productKey?products.find(p=>p.slug===productKey||String(p.id)===productKey):null;
  useEffect(()=>{window.scrollTo({top:0,behavior:'instant'});setCartOpen(false)},[route.path]);
  useEffect(()=>{
-  const title=product?product.name:route.path.startsWith('/loja')?'Coleção / Drop 001':({'/favoritos':'Favoritos','/sacola':'Sua sacola','/sobre':'A marca','/conta':'Minha conta'})[route.path];
+  const title=product?product.name:route.path.startsWith('/loja')?'Coleção / Drop 001':({'/favoritos':'Favoritos','/sacola':'Sua sacola','/sobre':'A marca','/conta':'Minha conta','/campanha':'Street Campaign'})[route.path];
   document.title=title?`${title} — Linha Tênue`:'Linha Tênue — Sem padrão. Sem limites.';
   document.querySelector('meta[name="description"]')?.setAttribute('content',product?.description||'Linha Tênue. Streetwear autoral, Boxy Fit, Essentials e denim. Loja conceitual com identidade LT Axis.');
  },[route.path,product]);
@@ -43,7 +45,8 @@ function App(){
  else if(route.path==='/sacola')view=<Cart/>;
  else if(route.path==='/favoritos')view=<Favorites/>;
  else if(route.path==='/sobre')view=<About/>;
- else if(route.path==='/conta')view=<Account/>;
+ else if(route.path==='/campanha')view=<Campaign/>;
+ else if(route.path==='/conta')view=<Account route={route}/>;
  else view=<main className="section not-found"><span className="eyebrow">404 / FORA DA LINHA</span><h1>ESSA PEÇA<br/>NÃO ESTÁ AQUI.</h1><a className="button dark" href="#/loja">Voltar à coleção</a></main>;
  return <><SiteHeader route={route}/><div id="main-content" tabIndex={-1}>{view}</div><SiteFooter/><CartDrawer/>{storageFailed&&<p className="storage-note" role="status">O navegador não permitiu salvar os dados. A sacola e os favoritos continuam disponíveis nesta sessão.</p>}{toast&&<div key={toast.key} className={`toast ${toast.type==='error'?'toast-error':''}`} role={toast.type==='error'?'alert':'status'}>{toast.type==='error'?<AlertCircle size={18}/>:<Check size={18}/>}<span>{toast.text}</span><button aria-label="Fechar aviso" onClick={()=>setToast(null)}><X size={16}/></button></div>}</>;
 }
