@@ -1,6 +1,6 @@
 # Linha Tênue — V4 / Admin Experience
 
-Loja de streetwear para portfólio em **React 19 + Vite 6**, com duas experiências integradas: vitrine Street Campaign e painel **LT AXIS / ADMIN**. Tudo é demonstrativo, com dados locais e nenhuma autenticação, pagamento, entrega ou serviço comercial real.
+Loja de streetwear para portfólio em **React 19 + Vite 6**, com duas experiências integradas: vitrine Street Campaign e painel **LT AXIS / ADMIN**. Tudo é demonstrativo, com dados locais e nenhuma autenticação, pagamento, entrega ou serviço comercial real. A campanha agora pode ser compartilhada automaticamente pelo servidor do projeto entre computador e celular.
 
 A V4 evolui o projeto existente. Preserva a identidade LT Axis, os 18 produtos, fotografias individuais, catálogo com busca/filtros/ordenação, favoritos, sacola, checkout de três etapas, conta demo, histórico, Shop the Look, galeria ampliável e previews mobile de outfits/acabamento.
 
@@ -24,7 +24,19 @@ npm.cmd ci
 npm.cmd run dev -- --port 3000
 ```
 
-O servidor informa os endereços Local e Network. Para abrir no celular, use Network com ambos os dispositivos no mesmo Wi-Fi. **Cada navegador/dispositivo possui sua própria demonstração local**: a persistência não é compartilhada entre computador e celular.
+O servidor informa os endereços Local e Network. Para abrir no celular, use Network com ambos os dispositivos no mesmo Wi-Fi. **A campanha é compartilhada entre os dispositivos conectados ao mesmo servidor**. Catálogo, sacola, favoritos e pedidos continuam pertencendo ao navegador em que foram criados.
+
+## Campanha no computador e no celular
+
+1. Inicie `npm.cmd run dev -- --port 3000` no computador. Se o servidor já estava aberto antes desta atualização, encerre com Ctrl+C e inicie novamente.
+2. No computador, abra **Painel demo → Campanhas**, faça as alterações e clique em **Salvar alterações**. Aguarde “Campanha sincronizada com os dispositivos conectados”.
+3. No celular, conectado ao mesmo Wi-Fi, abra o endereço **Network** informado pelo Vite. A home recebe título, imagem, subtítulo, CTA, drop, mensagens da topbar e seleção de destaques em cerca de três segundos, ou ao voltar para a aba.
+
+O computador pode usar `localhost` e o celular o IP de rede: ambos consultam o mesmo servidor. Na primeira execução, uma campanha já editada no navegador é publicada automaticamente se ainda não houver campanha compartilhada. Uma campanha já publicada prevalece sobre cópias antigas de outros navegadores.
+
+A configuração compartilhada fica em **`.linha-tenue/campaign.json`**, no computador que executa o projeto, e permanece após reiniciar o servidor. Essa pasta é ignorada pelo Git. Somente campos de campanha são compartilhados; não há envio de pedidos ou dados de conta. Os destaques por produto usam os IDs disponíveis no catálogo de cada navegador.
+
+A sincronização usa um endpoint local de demonstração (`/api/demo/campaign`) em `npm run dev` e `npm run preview`. Um deploy apenas estático não executa esse endpoint: nesse caso a interface informa que a campanha permanece local. O servidor deve continuar ligado para os dispositivos receberem mudanças. A edição compartilhada é demonstrativa e não possui autenticação.
 
 ## Acessar o painel
 
@@ -55,7 +67,7 @@ O painel tem navegação em drawer no mobile, tabelas com rolagem contida e form
 7. Para testar cancelamento, use outro pedido em estado registrado/preparação. Confirme o cancelamento com devolução de unidades. Recarregar não repete a devolução. Se optar por adiar, “Devolver estoque” fica disponível uma única vez.
 8. Em **Campanhas**, altere título/topbar/CTA e salve. A home reflete as mudanças. Em **Relatórios**, filtre origem/período e exporte CSV. Em **Configurações**, exporte um backup JSON.
 
-Para demonstrar atualização entre abas, mantenha loja e admin abertos **no mesmo navegador e origem**. Alterações são propagadas pelo evento `storage`. Histórico de pedidos conserva nome, variantes, preço, desconto, frete e total da simulação mesmo após editar ou excluir o produto.
+Para demonstrar atualização de catálogo, estoque e pedidos entre abas, mantenha loja e admin abertos **no mesmo navegador e origem**. A campanha também é compartilhada entre dispositivos pelo servidor. Alterações são propagadas pelo evento `storage`. Histórico de pedidos conserva nome, variantes, preço, desconto, frete e total da simulação mesmo após editar ou excluir o produto.
 
 ## Dados iniciais e indicadores
 
@@ -119,7 +131,7 @@ Quando não existe uma V4 válida, a leitura migra `lt-cart`, `lt-favorites`, `l
 
 Restaurar catálogo, campanhas ou cupons separadamente também exige confirmação. A restauração de catálogo repõe estoques iniciais e considera as baixas históricas conciliadas, evitando devolver novamente unidades de um estoque já restaurado; os valores dos pedidos são preservados.
 
-Sem armazenamento disponível, a interface informa que tudo fica apenas na sessão. Abas usam a mesma origem (protocolo, host e porta); `localhost`, IP de rede, portas diferentes e navegadores distintos têm bases independentes. Edições simultâneas seguem a última gravação local; não há transações distribuídas, reserva comercial de estoque ou sincronização entre dispositivos.
+Sem armazenamento disponível, a interface informa que tudo fica apenas na sessão. Abas usam a mesma origem (protocolo, host e porta); `localhost`, IP de rede, portas diferentes e navegadores distintos têm bases independentes. Edições simultâneas seguem a última gravação local; não há transações distribuídas ou reserva comercial de estoque. A campanha possui sincronização separada pelo servidor, sem compartilhar sacola, pedidos ou perfis.
 
 O CSV e o backup JSON são gerados por Blob no próprio navegador, somente com dados fictícios. O backup é uma exportação; importação de backup não faz parte desta versão.
 
@@ -136,6 +148,10 @@ src/lib/admin/campaign.js       # configuração/validação do CMS
 src/lib/coupons.js, pricing.js  # cupons dinâmicos e totais em centavos
 src/admin/                     # nove telas, shell, charts, formulários e estilos
 src/components/                # componentes da loja reutilizados/preservados
+src/lib/campaignSync.js         # recepção, publicação e reconexão da campanha
+scripts/campaign-server.js     # persistência compartilhada com escrita serializada
+src/framing.css                # proporções e pontos de enquadramento responsivos
+public/images/looks/           # retratos individuais dos três looks
 src/data.js                    # catálogo original mantido como base de restauração
 ```
 
@@ -143,6 +159,10 @@ Nenhuma dependência foi adicionada. Gráficos usam SVG/CSS e controles acessív
 
 ## Validação e limites
 
-**37 testes de lógica** no runner nativo do Node (incluindo os 23 anteriores), build Vite e verificações de navegador. Não há scripts de lint/typecheck configurados nesta stack JavaScript. Consulte o [registro da V4](docs/V4-VALIDATION.md) para os fluxos, larguras e limites de cobertura.
+**46 testes automatizados** no runner nativo do Node (incluindo os 23 anteriores), build Vite e verificações de navegador. Não há scripts de lint/typecheck configurados nesta stack JavaScript. Consulte o [registro da V4](docs/V4-VALIDATION.md) para os fluxos, larguras e limites de cobertura.
 
-Não há backend, conta real, senha real, pagamentos, emissão de boletos/QR Code, e-mail, entrega, upload ou serviço pago. Os dados de perfil são fixos e fictícios. Fotografias, acabamento, medidas, prazos e orientações de troca são conceituais. Nenhuma operação gera pedidos em serviços externos.
+O servidor local compartilha apenas a campanha. Não há conta real, senha real, pagamentos, emissão de boletos/QR Code, e-mail, entrega, upload ou serviço pago. Os dados de perfil são fixos e fictícios. Fotografias, acabamento, medidas, prazos e orientações de troca são conceituais. Nenhuma operação gera pedidos em serviços externos.
+
+## Revisão dos enquadramentos
+
+O banner preserva o topo das imagens de campanha, incluindo em monitores largos. Blocos de editorial usam a proporção original; produtos e retratos completos usam contenção para preservar a peça. O Shop the Look possui fotos individuais: look 01 com o rapaz centralizado, look 02 com a mulher de cropped off-white e look 03 com a mulher de Baby Tee Cobalt. As fotos foram geradas a partir dos editoriais da marca para esta demonstração. O preview feminino da home mobile permanece disponível mesmo ao escolher uma campanha masculina no CMS.

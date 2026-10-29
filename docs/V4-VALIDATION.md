@@ -43,3 +43,12 @@ Regressão da vitrine: URL de filtros, busca, quatro ordenações, favoritos/ref
 ## Limites de cobertura
 
 Testes de navegador executados nesta entrega, com roteiro registrado neste documento. Não há runner de navegador adicionado ao package.json ou CI versionado. A verificação não substitui testes em dispositivos físicos ou outros motores de navegador. Não inclui backend, autenticação, pagamentos, logística ou simultaneidade distribuída: estes recursos não existem na demonstração.
+
+## Refinamento de fotos e campanha compartilhada
+
+- 46 testes automatizados: 37 anteriores e 9 de servidor/sincronização. As rotinas do servidor são testadas com streams e arquivos temporários, sem conexão de rede nos testes unitários.
+- Verificados validação, limite de payload, origem, métodos, gravação serializada, leitura após reinício, migração inicial sem sobrescrever campanha existente e reconexão do cliente.
+- No navegador, computador em localhost e celular simulado em 127.0.0.1 recebem a mesma campanha, sem depender de localStorage compartilhado. Título, imagem e topbar atualizam sem refresh; restauração é propagada.
+- As seis imagens de campanha foram verificadas a 1905 px com alinhamento superior. Vitrine, loja, produto, sobre, campanha e conta foram verificadas de 320 a 2560 px, sem overflow ou recursos ausentes.
+- Editoriais respeitam a proporção original; fotos de produto e looks completos são contidas no quadro. Os looks 01/02/03 usam retratos individuais com os respectivos outfits. O montador de look continua adicionando as duas variantes à sacola no celular.
+- A sincronização compartilhada depende do servidor Node/Vite em execução. Um site publicado apenas como arquivos estáticos mantém o modo local e informa essa condição.

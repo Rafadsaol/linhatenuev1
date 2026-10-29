@@ -1,3 +1,6 @@
 node_modules/
 dist/
 *.local
+
+# Shared demo campaign belongs to the local server, not Git.
+.linha-tenue/

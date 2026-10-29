@@ -1,0 +1,33 @@
+/* Photographs follow their subject and native proportions across breakpoints. */
+.street-hero .hero-photo{inset:0}
+.street-hero .hero-photo,.campaign-editorial>img,.street-about .about-hero>img,.about-editorial>img{object-position:center top}
+.v2-shop .shop-banner>img{object-position:70% top}
+.v2-shop .shop-banner{height:clamp(220px,24vw,420px)}
+.manifesto .manifesto-image img{object-position:35% top}
+.fit-story-image{height:auto;min-height:0;aspect-ratio:3/2;align-self:center}
+.fit-story-image>img{height:100%;object-fit:contain;object-position:center}
+.catalog-campaign-image{min-height:0;aspect-ratio:3/2;align-self:center}
+.catalog-campaign-image>img{object-fit:contain;object-position:center}
+.campaign-scene-image{height:auto;aspect-ratio:3/2}
+.campaign-scene-image>img{object-fit:contain;object-position:center}
+.lookbook .lookbook-photo{height:auto;aspect-ratio:4/5;background:#171717}
+.lookbook .lookbook-card .lookbook-photo>img{object-fit:contain;object-position:center;transform:none}
+.lookbook .lookbook-card:hover .lookbook-photo>img{transform:none;filter:saturate(.8) brightness(1.025)}
+.social-grid>div,.social-grid>div:nth-child(4){height:auto;aspect-ratio:4/5;transform:none}
+.social-grid>div>img{object-position:center top}
+.social-grid>div:hover>img{transform:none}
+.social-grid>div:first-child>img,.social-grid>div:last-child>img{object-fit:contain}
+.member-visual>img{object-position:52% top}
+.v2-thumbs button>img{object-fit:contain}
+.campaign-sync-state.sync-synced{border-left-color:#37614f;background:#eaf1ed;color:#37614f}
+.campaign-sync-state.sync-offline,.campaign-sync-state.sync-unavailable{border-left-color:#80652c;background:#f7f2e7;color:#80652c}
+@media(max-width:767px){
+ .street-hero .hero-photo{object-position:66% top}
+ .street-hero[data-outfit="feminino"] .hero-photo{object-position:center top}
+ .street-about .about-hero>img,.campaign-editorial>img{object-position:70% top}
+ .social-grid>div,.social-grid>div:nth-child(4){height:auto;aspect-ratio:4/5}
+}
+.social-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.social-grid>div:nth-child(4)>img{transform:none;object-fit:contain;object-position:center}
+@media(max-width:767px){.social-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.social-type>span{font-size:clamp(32px,10vw,45px)}}

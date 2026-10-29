@@ -8,6 +8,7 @@ import './v2.css';
 import './campaign.css';
 import './experience.css';
 import './admin/admin.css';
+import './framing.css';
 import AdminApp from './admin/AdminApp';
 import '@fontsource/barlow-condensed/700.css';
 import '@fontsource/barlow-condensed/800.css';
