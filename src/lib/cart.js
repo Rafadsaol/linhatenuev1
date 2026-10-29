@@ -28,6 +28,16 @@ export function addCartItem(cart,product,color,size,quantity=1) {
  if(quantity+(existing?.qty||0)>variant.stock)return {error:`Limite demonstrativo desta variante: ${variant.stock} unidade(s). Você já tem ${existing?.qty||0} na sacola.`};
  return {cart:existing?cart.map(item=>lineKey(item)===lineKey(line)?{...item,qty:item.qty+quantity}:item):[...cart,line]};
 }
+export function addCartSelection(cart,selections){
+ if(!selections.length)return {error:'Escolha pelo menos uma peça para montar o look.'};
+ let next=cart;
+ for(const {product,color,size,quantity=1} of selections){
+  const result=addCartItem(next,product,color,size,quantity);
+  if(result.error)return {error:`${product.name}: ${result.error}`};
+  next=result.cart;
+ }
+ return {cart:next};
+}
 export const subtotalCents=(cart,products)=>cart.reduce((total,item)=>total+Math.round((products.find(p=>p.id===item.id)?.price||0)*100)*item.qty,0);
 export function safeRead(storage,key,fallback) {
  try {const value=storage.getItem(key);return value===null?fallback:JSON.parse(value)}catch{return fallback}

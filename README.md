@@ -1,129 +1,141 @@
-# Linha Tênue — V2 / Street Campaign
+# Linha Tênue — V3 / Interactive Shopping Experience
 
-E-commerce conceitual de streetwear, construído sobre a V1 existente em **React 19 + Vite 6**. Mantém a identidade **LT Axis**, as coleções originais, Boxy Fit e Feminino, as fotografias individuais, o cupom demonstrativo e as páginas institucionais. A V2 adiciona catálogo compartilhável, favoritos, variantes com estoque fictício e sacola lateral.
+Loja de streetwear para portfólio em **React 19 + Vite 6**, evoluída sobre a V2 Street Campaign. Mantém a identidade **LT Axis**, os 18 produtos, coleções, fotografias, composição editorial, filtros, favoritos e rotas anteriores. A V3 completa a jornada de compra com pedidos inteiramente fictícios, executados no navegador.
 
-## Street Campaign — refinamento V2.1
+## Executar e validar
 
-A V2 foi refinada sem recriar o projeto ou alterar os 18 produtos e suas variantes. A direção Street Campaign usa fotografia urbana, composições assimétricas, superfícies em preto e off-white e o eixo vertical azul como assinatura.
-
-- Home com hero de campanha e CTAs “Explorar coleção” e “Ver campanha”, categorias, Shop the Drop, manifesto, Boxy Fit, Feminino, lookbook e comunidade.
-- Header sticky com destaque de navegação e menu mobile numerado, mantendo os drawers acessíveis.
-- Catálogo com hero interno e banner editorial no meio do grid, sem alterar busca, filtros, ordenação, URLs ou favoritos. O banner não entra no contador de produtos.
-- Produto em superfície off-white, detalhes e entrega expansíveis, sugestões “Complete o look” que respeitam o público e a disponibilidade fictícia, e editorial final correspondente à peça/cor.
-- Sacola com hierarquia refinada e progresso ilustrativo para frete grátis, preservando cupom, quantidades, totais e persistência.
-- Sobre como manifesto visual, com origem, identidade, perspectiva, liberdade e a filosofia LT Axis.
-- Minha conta com acesso, cadastro visual com confirmação de senha, pedidos demonstrativos, favoritos reais do navegador e formulário ilustrativo de dados. Nenhum desses formulários envia ou grava dados pessoais.
-
-`#/campanha` reúne a campanha e seus looks. As áreas da conta podem ser abertas diretamente: `#/conta?area=pedidos`, `#/conta?area=favoritos` e `#/conta?area=dados`. A navegação das abas funciona com teclado e histórico da URL.
-
-As novas imagens em `public/images/street/` são editoriais conceituais gerados para o portfólio. As fotos frontais de produto e os dados da V2 foram mantidos. `CampaignLabel`, `CampaignEditorial` e `CompleteLook` são reutilizáveis; `lib/campaign.js` separa a curadoria visual da lógica comercial e `campaign.css` organiza a apresentação desta direção.
-
-## Executar
-
-Requer Node.js **22.8+** (recomendado: Node 24) e npm.
+Node.js **22.8+** (recomendado: Node 24) e npm:
 
 ```sh
 npm ci
 npm run dev -- --port 3000
-```
-
-No PowerShell, se `npm.ps1` estiver bloqueado, use `npm.cmd ci` e `npm.cmd run dev`.
-
-```sh
 npm test
 npm run build
 npm run preview
 ```
 
-Os 13 testes de lógica usam o runner nativo do Node, sem dependências de teste. Não há scripts de lint ou TypeScript configurados: a stack JavaScript da V1 foi preservada. O build valida os módulos React com Vite.
+No terminal PowerShell do VS Code, use `npm.cmd` quando a política do Windows bloquear `npm.ps1`:
+
+```powershell
+git pull origin main
+npm.cmd ci
+npm.cmd run dev
+```
+
+O Vite informa o endereço local disponível no terminal. Os testes usam o runner nativo do Node, sem dependências adicionais. O projeto JavaScript não possui scripts de lint ou TypeScript; o build verifica a resolução dos módulos React.
+
+O [registro de validação da V3](docs/V3-VALIDATION.md) descreve os testes de lógica, a jornada no navegador e as verificações de responsividade e teclado.
+
+## O que a V3 entrega
+
+- Sacola persistente com variantes agrupadas por produto/cor/tamanho, limites de estoque fictício, quantidades, remoção e confirmação para esvaziar; drawer com continuidade para loja, sacola e checkout.
+- Checkout em **revisão → entrega → pagamento demo**, com resumo compartilhado e atualização imediata de valores. Destino de exemplo predefinido; nenhuma solicitação de CPF, endereço pessoal ou dados financeiros.
+- Cupons locais, frete padrão/expresso, progresso para gratuidade e cálculos monetários em centavos.
+- Pedido com identificador local `LT-DEMO-…`, cópia dos produtos/variantes/preços/totais, confirmação, histórico e acompanhamento fictício manual em quatro etapas. O resumo registrado não depende do catálogo atual ou de mudanças posteriores na sacola.
+- **Visitante Demo / Conta demonstrativa** com visão geral, pedidos, favoritos, dados fixos de exemplo, preferência de movimento e reinício da experiência. A aparência de acesso/cadastro da V2 continua disponível, com campos fictícios preenchidos e somente leitura.
+- **Shop the Look** na home e campanha: três combinações de camiseta + calça, links individuais, valor combinado e painel para escolher variantes e adicionar uma ou ambas as peças. A seleção é validada integralmente antes de alterar a sacola.
+- **Quick View** nos cards: imagem, cor, tamanho, quantidade, adicionar e link para a página completa. Dialogs nativos com Escape, foco e navegação por teclado.
+- Estados vazios, erros de seleção, feedback de cupons, confirmação discreta e respeito a `prefers-reduced-motion` e à preferência visual do visitante.
+
+## Cupons e frete
+
+| Código | Benefício |
+| --- | --- |
+| `LT10` | 10% sobre as peças |
+| `AXIS20` | 20% sobre as peças |
+| `LINHA10` | Alias de 10% preservado da V2 |
+
+Um único cupom por pedido: aplicar outro substitui o anterior. Códigos são normalizados sem distinguir maiúsculas; inválidos exibem erro e preservam o cupom válido atual. O desconto é arredondado uma vez sobre o subtotal em centavos, antes do cálculo de frete. Frete nunca recebe desconto.
+
+| Modalidade fictícia | Valor | Prazo ilustrativo |
+| --- | --- | --- |
+| Padrão | R$ 19,90; grátis se peças **após descontos ≥ R$ 299,00** | 5–8 dias úteis fictícios |
+| Expressa | R$ 34,90, inclusive acima do limite | 1–3 dias úteis fictícios |
+
+## Jornada para apresentar o projeto
+
+1. Na home, abra **Montar este look: Forma em equilíbrio**. Escolha Boxy Fit Black no tamanho M e Baggy Washed Denim no 38. Adicione ambas.
+2. Vá à sacola: subtotal **R$ 319,80** e padrão grátis. Experimente um cupom inválido e depois **LT10**: peças **R$ 287,82**, padrão **R$ 19,90**, total **R$ 307,72**. Isso demonstra que a gratuidade considera o valor após desconto.
+3. Abra o checkout, revise as peças e continue. Em entrega, compare padrão e expressa; com expressa, o total do exemplo é **R$ 322,72**.
+4. Escolha Cartão, Pix ou Boleto **(demonstração)**. Nenhuma opção solicita dados ou gera instruções de pagamento. Clique em **SIMULAR PEDIDO**.
+5. A confirmação mostra o identificador, as peças e os valores. A sacola fica vazia. Recarregue a página para conferir persistência.
+6. Abra **VER MEUS PEDIDOS → Ver detalhes → Simular próxima etapa**. Avance até “Entregue ficticiamente” e recarregue: o progresso continua salvo.
+7. Abra Minha conta, explore favoritos e dados de exemplo. **REINICIAR DEMONSTRAÇÃO** pede confirmação e apaga apenas os dados desta loja.
+
+Também é possível iniciar pelos cards com **Quick view**, combinar variantes diferentes do mesmo produto e conferir limites de estoque na sacola.
 
 ## Rotas
 
-A navegação mantém o padrão de hash da V1, compatível com hospedagem estática:
+A navegação por hash funciona em hospedagem estática, preservando os links da V2:
 
 | Rota | Experiência |
 | --- | --- |
-| `#/` | Home, lançamentos, categorias, Boxy Fit, Feminino, manifesto e lookbook |
-| `#/loja` | Catálogo completo |
-| `#/loja/camisetas-boxy` | Boxy Tees |
-| `#/loja/essentials` | Essentials |
-| `#/loja/calcas-baggy` | Baggy Pants |
-| `#/loja/baby-tees` | Baby Tees |
-| `#/loja/boxy-fit` | Linha Boxy Fit |
-| `#/loja/drops` | Drops limitados |
-| `#/produto/boxy-fit-black` | Produto por slug |
-| `#/favoritos` | Peças salvas no navegador |
-| `#/sacola` | Sacola completa, cupom e checkout ilustrativo |
-| `#/campanha` | Street Campaign, editoriais e looks clicáveis |
-| `#/sobre` | Manifesto visual e identidade LT Axis |
-| `#/conta` | Acesso, cadastro, pedidos, favoritos e dados demonstrativos |
+| `#/` | Street Campaign, categorias, lançamentos, manifesto, Boxy Fit, Feminino e Shop the Look |
+| `#/loja` | Catálogo compartilhável com busca, filtros e ordenação |
+| `#/loja/camisetas-boxy`, `#/loja/essentials`, `#/loja/calcas-baggy` | Categorias originais |
+| `#/loja/baby-tees`, `#/loja/boxy-fit`, `#/loja/drops` | Coleções e drops |
+| `#/produto/boxy-fit-black` | Produto, galeria ampliável, variantes, medidas e sugestões |
+| `#/favoritos` | Curadoria salva neste navegador |
+| `#/sacola` | Sacola, cupom e resumo |
+| `#/checkout` | Checkout demonstrativo em três etapas |
+| `#/pedido-confirmado/:id` | Confirmação fictícia e resumo registrado |
+| `#/pedidos` | Histórico local de pedidos fictícios |
+| `#/pedidos/:id` | Detalhes e acompanhamento manual |
+| `#/minha-conta` | Visão geral do Visitante Demo |
+| `#/minha-conta?area=pedidos` | Pedidos dentro da conta; também aceita `resumo`, `acesso`, `favoritos`, `dados` |
+| `#/conta` | Aparência de acesso/cadastro preservada da V2 |
+| `#/conta?area=pedidos` | Links antigos das áreas da conta continuam válidos |
+| `#/campanha`, `#/sobre` | Campanha editorial e manifesto LT Axis |
 
-Os links numéricos antigos, como `#/produto/1`, continuam funcionando.
+Links numéricos antigos, como `#/produto/1`, continuam funcionando. Pedidos inexistentes e checkout sem peças exibem um estado vazio com navegação útil.
 
-### Filtros compartilháveis
+### Catálogo e produto preservados
 
-Exemplo:
+Busca sem distinção de acentos; filtros combináveis por categoria, público, tamanho, cor e faixa de preço; ordenação por novidades, preço ou nome. Estado na URL, por exemplo:
 
 ```text
-#/loja/camisetas-boxy?colecao=Feminino&tamanho=M&cor=Off-white&min=100&max=115&ordenar=menor-preco
+#/loja?colecao=Feminino&tamanho=M&cor=Off-white&max=120&ordenar=menor-preco
 ```
 
-Parâmetros: `q`, `categoria` (quando a categoria não estiver no caminho), `colecao`, `tamanho`, `cor`, `min`, `max` e `ordenar`. A busca considera nome, categoria, descrição e tags, ignorando acentos. Ordenações: `novidades`, `menor-preco`, `maior-preco` e `nome`. Filtros de tamanho e cor verificam a mesma variante disponível. Voltar, avançar, recarregar e compartilhar preservam os filtros na URL.
-
-No desktop há sidebar; no mobile, drawer com foco contido e fechamento por Escape. O grid usa duas colunas a partir de 360px e três ou quatro em telas maiores.
-
-## Produtos, imagens e variantes
-
-- 18 produtos fictícios, incluindo os oito iniciais e as linhas Boxy Fit e Feminino já existentes.
-- Duas Art Editions estampadas: Axis Blueprint e Axis Study.
-- Cada produto tem slug, descrições curta e detalhada, preço, categorias, imagens, cores, tamanhos, tags e data de lançamento.
-- Camisetas usam P, M, G e GG. Calças usam grade numérica: 36–46 no unissex e 34–44 no feminino.
-- Cada variante possui identificador, tamanho, cor, estoque fictício e foto correspondente.
-- Boxy Fit e Boxy Cropped têm opções de cor com fotos reais dentro do catálogo mockado; o preço permanece coerente no grupo de variantes.
-- Exemplos para validar indisponibilidade: Boxy Shadow está esgotada; Boxy Fit Cobalt em Azul/GG e Boxy Distortion em Preto/GG estão indisponíveis na demonstração.
-- A galeria tem frente, foto ilustrativa de acabamento e editorial no corpo quando disponível. Miniaturas trocam a imagem. A ampliação nativa permite explorar a foto no tamanho original.
-- As fotografias foram geradas para esta experiência conceitual. Detalhes de tecido são ilustrativos da coleção, não registros de peças físicas.
-
-As imagens são locais em `public/images/`. As fotos frontais individuais têm 1086 × 1448 pixels. Imagens do catálogo usam carregamento sob demanda. As fontes Anton, Space Grotesk e Barlow Condensed são servidas localmente via `@fontsource`.
-
-## Sacola e favoritos
-
-A sacola distingue produto, tamanho e cor, limita quantidades ao estoque fictício e calcula valores em centavos. Abre em drawer após adicionar, permite editar/remover e possui página própria. O cupom `LINHA10` aplica 10% ilustrativos.
-
-`lt-cart` e `lt-favorites` persistem no localStorage. Dados inválidos são tratados com segurança; grades antigas P–GG das calças da V1 são migradas para tamanhos numéricos. Se o navegador bloquear o armazenamento, os estados continuam disponíveis na sessão com aviso.
-
-Corações são botões independentes dos links dos cards, com estado acessível. Favoritos podem ser adicionados/removidos no catálogo, no produto e na página dedicada.
+Os filtros de cor/tamanho consideram a mesma variante disponível. O banner editorial do catálogo não altera a contagem de peças. A galeria mantém fotos individuais em alta resolução, acabamento ilustrativo e editorial no corpo quando disponível, com ampliação no tamanho original. Calças usam grade numérica. Todos os produtos e fotografias são conceituais; medidas e orientações de cuidados/trocas também são ilustrativas.
 
 ## Organização
 
 ```text
 src/
-  data.js                    # catálogo mockado e variantes
-  lib/catalog.js             # busca, filtros, ordenação, URLs e variantes
-  lib/cart.js                # validação, migração, quantidades e centavos
-  lib/router.js              # navegação por hash e histórico
-  lib/motion.js              # rolagem respeitando movimento reduzido
-  lib/campaign.js            # curadoria de editoriais e sugestões de look
-  state/Store.jsx            # sacola, favoritos, persistência e feedback
-  components/                # marca, cards, galeria, drawers, header, footer e lookbook
-  pages/                     # Home, Shop, Product, Favorites, Cart, About e Account
-  style.css / street.css     # base visual preservada da V1
-  brand.css                  # identidade LT Axis
-  v2.css                     # aprimoramentos e responsividade da V2
-  campaign.css               # direção visual Street Campaign
-tests/                       # 13 testes de filtros, catálogo, variantes e sacola
+  data.js                    # 18 produtos, variantes, estoque e fotos locais
+  state/Store.jsx            # estado compartilhado e persistência da demo
+  lib/
+    catalog.js, router.js    # catálogo e navegação existentes
+    cart.js                  # agrupamento, estoque e adição atômica de looks
+    coupons.js               # validação dos códigos locais
+    shipping.js, pricing.js  # frete e cálculos em centavos
+    orders.js                # snapshots, leitura validada e etapas fictícias
+    demo.js                  # perfil, destino e meios fictícios
+    campaign.js, looks.js    # curadoria editorial e combinações
+  components/
+    VariantPicker.jsx        # variantes reutilizáveis no Quick View e looks
+    QuickView.jsx, LookBuilder.jsx
+    CouponForm.jsx, OrderTotals.jsx
+    OrderRecord.jsx          # itens registrados, histórico e timeline
+    DemoControls.jsx         # confirmações de limpeza/reinício
+    ...                      # componentes editoriais e V2 preservados
+  pages/
+    Checkout.jsx, Orders.jsx # novos fluxos demonstrativos
+    ...                      # home, catálogo, produto, sacola, conta e institucionais
+  experience.css             # apresentação da V3 sobre Street Campaign
+public/brand/                # logo LT Axis e favicon preservados
+public/images/               # imagens conceituais locais
 ```
 
-`BrandLogo` e `BrandMark` reutilizam o monograma arquitetônico inspirado na referência fornecida. Os vetores substituíveis estão em `public/brand/`. Não se usa a prancha de apresentação como logo. A identidade se aplica ao header, favicon, footer, coleções e produtos.
+## Persistência, privacidade e limites
 
-## Validação
+Somente quatro chaves próprias são usadas no `localStorage`: `lt-cart`, `lt-favorites`, `lt-orders` e `lt-preferences` (cupom, modalidade e redução de movimento). A leitura valida os dados e mantém compatibilidade com sacolas antigas. Pedidos restaurados usam somente campos previstos no esquema; o destino é sempre o exemplo fictício. O reinício remove essas quatro chaves após confirmação e preserva outros dados do navegador.
 
-Os testes de lógica cobrem combinações de filtros, busca sem acentos, ordenação, URLs, grades, estoque, fotos existentes, migração do carrinho, limites de variante e cálculo em centavos. A validação em navegador cobre busca, recarga e histórico das URLs, favoritos persistentes, galeria, troca de cor, quantidade, sacola, cupom, checkout demonstrativo, menu/drawers com Escape e foco, além das telas em 360, 390, 768, 1024 e 1440px.
+**Tudo é demonstrativo.** Não há backend, conta real, pagamento, QR Code Pix, emissão de boleto, entrega, rastreamento, cadastro de newsletter ou atendimento comercial. Os campos da conta usam valores fictícios fixos; senhas, dados pessoais e bancários não são coletados nem persistidos. Nenhuma requisição externa gera pedidos. Fotos e fontes são locais.
 
-Títulos e descrições da página são atualizados por rota. A aplicação é uma SPA estática: renderização no servidor e SEO avançado não fazem parte desta versão. Controles de toque, textos alternativos, contraste, foco e `prefers-reduced-motion` fazem parte da interface.
+O histórico pertence ao navegador/origem atual, não sincroniza entre dispositivos e pode ser apagado pelo visitante ou pelas configurações do navegador. Se o armazenamento estiver bloqueado ou cheio, a interface informa que os dados ficam apenas na sessão. Estoque é uma restrição fictícia por sacola, sem reserva ou baixa global após um pedido. As etapas avançam somente por ação do visitante. Recarregar o checkout retorna à revisão com sacola, cupom e frete preservados.
 
-## Limites e V3
+## Próximas evoluções — V4
 
-**Tudo é demonstrativo.** Não há estoque real, compra, pagamento, coleta de dados financeiros, envio de pedidos, autenticação, cadastro de newsletter ou atendimento comercial. A conta não transmite nem armazena credenciais ou dados de cadastro/perfil. O painel de pedidos não cria pedidos e os favoritos da conta refletem apenas a seleção local do navegador. As medidas e orientações são ilustrativas.
-
-Uma V3 poderá integrar catálogo e estoque reais, autenticação, checkout, painel administrativo e fotografias de produção. Nenhuma dessas integrações foi simulada como se estivesse operacional.
+Para aprofundar o portfólio: suíte de navegador versionada em CI, mais editoriais próprios e comparação de medidas/caimentos. Uma eventual operação comercial exige projeto próprio de backend, catálogo/estoque reais, autenticação, checkout seguro, gestão de pedidos e fotografias de produção; esses serviços não fazem parte da V3.

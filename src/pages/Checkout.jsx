@@ -1,0 +1,32 @@
+import React,{useEffect,useRef,useState} from 'react';
+import {ArrowLeft,ArrowRight,Check,LockKeyhole,MapPin} from 'lucide-react';
+import {products} from '../data';
+import {useStore} from '../state/Store';
+import {navigate} from '../lib/router';
+import {shippingMethods,shippingPrice} from '../lib/shipping';
+import {formatCents} from '../lib/pricing';
+import {demoLocation,demoNotice,paymentMethods} from '../lib/demo';
+import CampaignLabel from '../components/CampaignLabel';
+import CouponForm from '../components/CouponForm';
+import OrderTotals,{FreeShippingProgress} from '../components/OrderTotals';
+import {SnapshotItems} from '../components/OrderRecord';
+import EmptyState from '../components/EmptyState';
+const steps=['Revisão','Entrega','Pagamento demo'];
+export default function Checkout(){
+ const {cart,count,totals,preferences,setShipping,submitOrder}=useStore();
+ const [step,setStep]=useState(0),[payment,setPayment]=useState(''),[error,setError]=useState(''),[submitting,setSubmitting]=useState(false);
+ const heading=useRef(null),didMount=useRef(false),submitLock=useRef(false);
+ useEffect(()=>{if(didMount.current)heading.current?.focus();didMount.current=true},[step]);
+ const shipping=shippingMethods.find(method=>method.id===preferences.shippingId);
+ const items=cart.map(line=>{const product=products.find(p=>p.id===line.id);return {...line,name:product.name,slug:product.slug,image:product.images[line.color][0].src,unitPriceCents:Math.round(product.price*100),lineTotalCents:Math.round(product.price*100)*line.qty}});
+ function go(next){setError('');setStep(next)}
+ function submit(event){
+  event.preventDefault();if(submitLock.current)return;
+  if(!payment){setError('Selecione uma opção de pagamento demonstrativo.');return}
+  submitLock.current=true;setSubmitting(true);
+  const result=submitOrder(payment);
+  if(result.error){setError(result.error);submitLock.current=false;setSubmitting(false);return}
+  navigate(`/pedido-confirmado/${result.order.id}`);
+ }
+ return <main className="section checkout-page"><div className="experience-heading"><CampaignLabel code="CHECKOUT / PORTFÓLIO">O PRÓXIMO PASSO É SEU</CampaignLabel><h1>DA ESCOLHA<br/>À EXPRESSÃO.</h1><p>Uma jornada completa. Inteiramente demonstrativa.</p></div>{!count?<EmptyState title="SUA SACOLA AINDA ESTÁ VAZIA." text="Escolha uma peça antes de iniciar o checkout demonstrativo."/>:<><ol className="checkout-steps" aria-label="Etapas do checkout">{steps.map((label,index)=><li key={label} className={step===index?'active':step>index?'complete':''}><button disabled={index>step} onClick={()=>go(index)} aria-current={step===index?'step':undefined}><span>{index<step?<Check size={16}/>:`0${index+1}`}</span><strong>{label}</strong></button></li>)}</ol><div className="checkout-layout"><section className="checkout-stage" aria-labelledby="checkout-step-title"><CampaignLabel code={`0${step+1} / 03`}>EXPERIÊNCIA LOCAL</CampaignLabel><h2 id="checkout-step-title" ref={heading} tabIndex={-1}>{steps[step]}</h2>{step===0&&<><p className="stage-intro">Confira suas peças. Cada detalhe faz parte da sua identidade.</p><SnapshotItems items={items}/><a href="#/sacola" className="campaign-link"><ArrowLeft size={16}/>Editar sacola e quantidades</a><div className="checkout-next"><button className="button dark" onClick={()=>go(1)}>Escolher entrega<ArrowRight size={18}/></button></div></>}{step===1&&<><p className="stage-intro">Um destino de exemplo para experimentar as possibilidades.</p><div className="demo-destination"><MapPin size={23}/><div><span className="eyebrow">LOCALIZAÇÃO FICTÍCIA PREDEFINIDA</span><address>{demoLocation.street}<br/>{demoLocation.district} · {demoLocation.city}<br/>{demoLocation.zip}</address><small>Nenhum endereço pessoal é necessário.</small></div></div><fieldset className="checkout-choices"><legend>Modalidade de entrega simulada</legend>{shippingMethods.map(method=><label key={method.id} className={`checkout-choice ${preferences.shippingId===method.id?'selected':''}`}><input type="radio" name="shipping" value={method.id} checked={preferences.shippingId===method.id} onChange={()=>setShipping(method.id)}/><span><strong>{method.label}</strong><small>{method.estimate}</small></span><b>{shippingPrice(totals.netProductsCents,method.id)?formatCents(shippingPrice(totals.netProductsCents,method.id)):'Grátis'}</b></label>)}</fieldset><p className="stage-footnote">Prazos e valores ilustrativos. Frete padrão grátis a partir de R$ 299,00 em peças após descontos.</p><div className="checkout-next"><button className="text-link" onClick={()=>go(0)}><ArrowLeft size={16}/>Revisão</button><button className="button dark" onClick={()=>go(2)}>Pagamento demo<ArrowRight size={18}/></button></div></>}{step===2&&<form onSubmit={submit}><p className="stage-intro">Escolha como deseja visualizar esta simulação.</p><fieldset className="checkout-choices"><legend>Forma de pagamento fictícia</legend>{paymentMethods.map(method=><label key={method.id} className={`checkout-choice payment-choice ${payment===method.id?'selected':''}`}><input type="radio" name="payment" value={method.id} checked={payment===method.id} onChange={()=>{setPayment(method.id);setError('')}}/><span><strong>{method.label}</strong><small>{method.description}</small></span></label>)}</fieldset><p className="demo-notice"><LockKeyhole size={19}/>{demoNotice}</p>{error&&<p className="selection-error" role="alert">{error}</p>}<div className="checkout-next"><button type="button" className="text-link" onClick={()=>go(1)}><ArrowLeft size={16}/>Entrega</button><button type="submit" className="button dark" disabled={submitting}>{submitting?'Registrando simulação…':'SIMULAR PEDIDO'}<ArrowRight size={18}/></button></div></form>}</section><aside className="experience-summary checkout-summary"><CampaignLabel code={`${count} PEÇA${count===1?'':'S'} / SUA SELEÇÃO`}>RESUMO DO PEDIDO</CampaignLabel><h2>SUA FREQUÊNCIA.</h2><FreeShippingProgress totals={totals}/><CouponForm/><OrderTotals totals={totals} shippingLabel={shipping.label}/><p className="summary-note">Seleção, cupons e totais atualizados em tempo real.</p><p className="demo-notice">{demoNotice}</p><a className="campaign-link" href="#/sacola">Voltar à sacola<ArrowRight size={16}/></a></aside></div></>}</main>;
+}
