@@ -1,8 +1,20 @@
-# Linha Tênue — V4 / Admin Experience
+# Linha Tênue — V5 Final / Portfolio Edition
 
 Loja de streetwear para portfólio em **React 19 + Vite 6**, com duas experiências integradas: vitrine Street Campaign e painel **LT AXIS / ADMIN**. Tudo é demonstrativo, com dados locais e nenhuma autenticação, pagamento, entrega ou serviço comercial real. A campanha agora pode ser compartilhada automaticamente pelo servidor do projeto entre computador e celular.
 
-A V4 evolui o projeto existente. Preserva a identidade LT Axis, os 18 produtos, fotografias individuais, catálogo com busca/filtros/ordenação, favoritos, sacola, checkout de três etapas, conta demo, histórico, Shop the Look, galeria ampliável e previews mobile de outfits/acabamento.
+A V5 finaliza o projeto existente. Preserva a identidade LT Axis, os 18 produtos, fotografias individuais, catálogo com busca/filtros/ordenação, favoritos, sacola, checkout de três etapas, conta demo, histórico, Shop the Look, galeria ampliável e previews mobile de outfits/acabamento.
+
+## Novidades da V5
+
+- **Explorar demonstração**: botão discreto disponível na loja e no admin. Oito etapas opcionais, com Voltar, Próximo, Pular, Concluir e Escape. Navega sem adicionar itens, salvar formulários ou criar pedidos. Ao fechar retorna à rota, rolagem e foco de origem. O guia é uma região não modal; a página continua utilizável.
+- **`#/case-study`**: apresentação editorial distinta da página da marca, com LT Axis, paleta, tipografia, funcionalidades, tecnologias verificadas e seis capturas reais de 1440 × 1000 da V5. Capturas são estáticas e exibem uma sessão de exemplo; seus dados atuais podem diferir.
+- Categorias com fotografia editorial local, foco de teclado padronizado, aviso de newsletter demonstrativa, movimento reduzido e carregamento separado do admin/case study. As fontes carregam apenas o conjunto latino necessário ao português.
+- Atalhos Abrir loja, Abrir admin e Reiniciar demonstração no case study; o reset mantém a confirmação e o escopo da V4.
+- Título e descrição por rota, favicon LT Axis e Open Graph básico. Para publicar, ajuste a imagem Open Graph para uma URL absoluta do domínio final. Rotas hash não possuem metadados próprios para crawlers; não há SSR nem prerender.
+
+**Descrição para portfólio:** Linha Tênue é um e-commerce conceitual de streetwear que une direção de arte editorial, identidade LT Axis, compra demonstrativa e gestão integrada de produtos, estoque, pedidos e campanhas, desenvolvido com React e Vite.
+
+O relatório de auditoria, resultados e limites está em [V5-VALIDATION.md](docs/V5-VALIDATION.md). O plano inicial foi registrado em [V5-PLAN.md](docs/V5-PLAN.md).
 
 ## Executar
 
@@ -107,6 +119,7 @@ Cálculos usam centavos. Frete padrão **R$ 19,90**, grátis quando peças **ap�
 
 | Rota | Experiência |
 | --- | --- |
+| `#/case-study` | Apresentação do projeto, capturas reais e acesso ao tour |
 | `#/` | Home Street Campaign, categorias, coleções, manifesto e Shop the Look |
 | `#/loja` | Catálogo, busca, filtros e ordenação compartilháveis na URL |
 | `#/loja/camisetas-boxy`, `#/loja/essentials`, `#/loja/calcas-baggy` | Categorias originais |
