@@ -39,3 +39,39 @@
 .demo-reduced-motion *,.demo-reduced-motion *::before,.demo-reduced-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.demo-reduced-motion .v2-reveal{opacity:1;transform:none}
 @media(max-width:900px){.checkout-layout,.order-record{gap:35px}.checkout-summary,.order-saved-summary{margin-top:0}}
 @media(prefers-reduced-motion:reduce){.confirmation-check,.applied-coupon,.lookbook-card{animation:none;transition:none}}
+
+/* Touch-friendly previews retain the product links and desktop hover. */
+.photo-view-controls{display:flex;min-width:0;border:1px solid #ffffff35;border-top:0}
+.photo-view-controls>button{flex:1;min-width:0;min-height:44px;padding:10px 6px;color:inherit;background:transparent;font-size:9px;letter-spacing:.4px;position:relative;transition:background .2s,color .2s}
+.photo-view-controls>button+button{border-left:1px solid #ffffff35}
+.photo-view-controls>button[aria-pressed="true"]{background:#ffffff0b}
+.photo-view-controls>button[aria-pressed="true"]::after{content:'';position:absolute;bottom:0;left:24%;right:24%;height:2px;background:var(--blue)}
+.photo-view-controls>button:hover{background:#ffffff14}
+.women-launch .photo-view-controls,.member-panel .photo-view-controls,.product-page .photo-view-controls{border-color:#c9c9c3}
+.women-launch .photo-view-controls>button+button,.member-panel .photo-view-controls>button+button,.product-page .photo-view-controls>button+button{border-color:#c9c9c3}
+.women-launch .photo-view-controls>button[aria-pressed="true"],.member-panel .photo-view-controls>button[aria-pressed="true"]{background:#00000006}
+.women-launch .photo-view-controls>button:hover,.member-panel .photo-view-controls>button:hover{background:#0000000b}
+.quick-view-media{min-width:0;align-self:stretch;display:flex;flex-direction:column;background:#deded9}
+.quick-view-media .quick-view-photo{height:auto;flex:1}
+.quick-view-media .photo-view-controls{border:0;border-top:1px solid #bfbfb9;background:var(--paper);color:#111;flex-shrink:0}
+.quick-view-media .photo-view-controls>button+button{border-color:#bfbfb9}
+.quick-view-media .photo-view-controls>button[aria-pressed="true"],.quick-view-media .photo-view-controls>button:hover{background:#00000008}
+.quick-view-photo-caption{display:block;font-size:9px;line-height:1.7;color:#666;background:var(--paper);padding:10px 15px;text-align:center}
+.hero-outfit-preview{display:none}
+@media(max-width:767px){
+ .hero-outfit-preview{display:flex;align-items:center;justify-content:space-between;gap:12px;position:absolute;bottom:22px;left:8%;right:6%;z-index:2;color:#fff}
+ .hero-outfit-preview>span{font-size:6px;letter-spacing:1.5px;line-height:1.8;max-width:60px;display:block}
+ .hero-outfit-preview>div{display:flex;border:1px solid #ffffff65;background:#0a0a0aab;backdrop-filter:blur(8px)}
+ .hero-outfit-preview button{min-height:44px;min-width:96px;padding:11px 15px;font-size:10px;color:#fff;position:relative}
+ .hero-outfit-preview button+button{border-left:1px solid #ffffff65}
+ .hero-outfit-preview button[aria-pressed="true"]{background:var(--paper);color:#111}
+ .hero-outfit-preview button[aria-pressed="true"]::after{content:'';height:2px;position:absolute;bottom:0;left:18px;right:18px;background:var(--blue)}
+ .street-hero .hero-photo{object-position:66% center;transition:object-position .45s ease}
+ .street-hero[data-outfit="feminino"] .hero-photo{object-position:100% center}
+ .street-hero .hero-copy{bottom:115px}
+ .street-hero .hero-bottom{display:none}
+}
+@media(max-width:640px){
+ .quick-view-media .quick-view-photo{height:260px;min-height:0;flex:none}
+ .photo-view-controls>button{font-size:9px;letter-spacing:.2px}
+}

@@ -36,3 +36,7 @@ Tab permanece dentro do Quick View; Escape fecha e retorna o foco ao card. Menu 
 Siga a jornada documentada no README. Confira também em uma janela privativa (estado vazio), depois recarregue a confirmação e o histórico. Para verificar o reinício, mantenha dados de outro projeto na mesma origem: eles devem permanecer intactos.
 
 Estas verificações cobrem o front-end demonstrativo. Não validam operação comercial, serviços reais, dispositivos físicos ou outros motores de navegador. Uma suíte de navegador versionada em CI permanece como evolução recomendada para a V4.
+
+## Refinamento mobile — previews
+
+Alternância Masculino/Feminino na foto inicial validada com toque em 320, 390, 640 e 767 px, com estado selecionado e descrição acessível. O enquadramento desktop continua exibindo os dois modelos. Botões Frente/Acabamento nos cards trocam entre foto da peça e detalhe ilustrativo, sem navegação ou abertura de modal. Testados algodão e denim, retorno à frente, imagens individuais em alta resolução, favoritos e links de produto. No Quick View, acabamento acompanha a cor selecionada e a adição à sacola mantém a variante. Layout de cards/modais validado de 320 a 1440 px, junto a teclado, foco e ausência de erros JavaScript ou imagens ausentes.

@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import {ArrowUpRight, ArrowRight, Instagram} from 'lucide-react';
 import {lifestyle,products} from '../data';
 import ProductCard from '../components/ProductCard';
@@ -16,6 +16,7 @@ const categories=[
  {label:'Drops',name:'Drops Limitados',sub:'FORA DE QUALQUER PADRÃO',product:products[2]}
 ];
 export default function Home({goCategory}){
+ const [outfit,setOutfit]=useState('masculino');
  useEffect(()=>{
   if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.08});
@@ -24,10 +25,11 @@ export default function Home({goCategory}){
   return()=>{observer.disconnect();sections.forEach(section=>section.classList.remove('v2-reveal','is-visible'))};
  },[]);
  return <>
- <section className="hero street-hero">
-  <img className="hero-photo" src={streetImages.hero} alt="Street Campaign: modelos com Boxy Fit preta, cropped off-white e jeans de pernas amplas" fetchPriority="high"/>
+ <section className="hero street-hero" data-outfit={outfit}>
+  <img id="campaign-hero-photo" className="hero-photo" src={streetImages.hero} alt="Street Campaign: modelos com Boxy Fit preta, cropped off-white e jeans de pernas amplas" fetchPriority="high"/>
   <div className="hero-shade"/>
   <div className="hero-top"><span>LINHA TÊNUE / STREET CAMPAIGN</span><span>VOL. 001 — BRASIL</span></div>
+  <div className="hero-outfit-preview"><span>OUTFIT / PREVIEW</span><div role="group" aria-label="Prévia dos outfits da campanha">{['masculino','feminino'].map(value=><button key={value} type="button" aria-controls="campaign-hero-photo" aria-pressed={outfit===value} onClick={()=>setOutfit(value)}>{value==='masculino'?'Masculino':'Feminino'}</button>)}</div><p className="sr-only" role="status">{outfit==='masculino'?'Outfit masculino: Boxy Fit Black e Baggy Washed Denim.':'Outfit feminino: Boxy Cropped Off-White e Wide Leg High-Waist.'}</p></div>
   <div className="hero-copy"><CampaignLabel code="THE FIRST LINE">DROP 001</CampaignLabel><h1>SEM PADRÃO.<br/>SEM LIMITES<span className="hero-period">.</span></h1><p>A linha entre o comum e o extraordinário.</p><div className="hero-ctas"><a className="button light" href="#/loja">Explorar coleção <ArrowRight size={18}/></a><a className="hero-campaign-link" href="#/campanha">Ver campanha <ArrowUpRight size={18}/></a></div></div>
   <div className="hero-art" aria-hidden="true"><BrandMark/><span>FORM.<br/>STREET.<br/>CULTURE.</span></div>
   <div className="campaign-strip" aria-label="Explore o drop">{[0,2,3].map(i=><a key={i} href={'#'+productHref(products[i])} aria-label={products[i].name}><ProductImage product={products[i]} decorative/></a>)}<span>001 / THE FIRST LINE</span></div>

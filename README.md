@@ -34,6 +34,7 @@ O [registro de validação da V3](docs/V3-VALIDATION.md) descreve os testes de l
 - Pedido com identificador local `LT-DEMO-…`, cópia dos produtos/variantes/preços/totais, confirmação, histórico e acompanhamento fictício manual em quatro etapas. O resumo registrado não depende do catálogo atual ou de mudanças posteriores na sacola.
 - **Visitante Demo / Conta demonstrativa** com visão geral, pedidos, favoritos, dados fixos de exemplo, preferência de movimento e reinício da experiência. A aparência de acesso/cadastro da V2 continua disponível, com campos fictícios preenchidos e somente leitura.
 - **Shop the Look** na home e campanha: três combinações de camiseta + calça, links individuais, valor combinado e painel para escolher variantes e adicionar uma ou ambas as peças. A seleção é validada integralmente antes de alterar a sacola.
+- Prévia mobile da campanha com opções **Masculino / Feminino** para enquadrar cada outfit. Cards com botões **Frente / Acabamento**, sem abrir outra página; o Quick View também permite alternar as fotos.
 - **Quick View** nos cards: imagem, cor, tamanho, quantidade, adicionar e link para a página completa. Dialogs nativos com Escape, foco e navegação por teclado.
 - Estados vazios, erros de seleção, feedback de cupons, confirmação discreta e respeito a `prefers-reduced-motion` e à preferência visual do visitante.
 
