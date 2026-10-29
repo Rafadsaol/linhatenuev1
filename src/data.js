@@ -25,5 +25,12 @@ const womenProducts=[
  {id:15,name:'Baby Tee Cobalt',price:89.9,color:'Azul',category:'Baby Tees',fit:'Baby Tee',imageIndex:6,measurements:makeMeasures(38,48),description:'Modelagem próxima ao corpo, mangas curtas e comprimento na cintura. Uma alternativa à silhueta boxy para compor o mesmo guarda-roupa urbano. Algodão macio e logomarca pequena no peito.'},
  {id:16,name:'Wide Leg High-Waist',price:219.9,color:'Azul',category:'Calças Baggy',fit:'Wide Leg · cintura alta',imageIndex:7,measurements:makeMeasures(34,104),description:'Cintura alta definida, quadril confortável e pernas amplas até a barra. Denim lavado com estrutura para equilibrar camisetas boxy e croppeds. Um caimento solto que acompanha o movimento.'},
 ].map(p=>({...p,audience:'Feminino',line:'Feminino',tag:'NOVO',image:'/images/fit-collection.png',sizes}));
-export const products=[...originalProducts.map(p=>({...p,audience:'Unissex',line:'Original',fit:p.category==='Calças Baggy'?'Baggy':'Boxy Original',sizes,measurements:makeMeasures(p.category==='Calças Baggy'?38:56,p.category==='Calças Baggy'?100:68)})),...newProducts,...womenProducts];
+const catalogProducts=[...originalProducts.map(p=>({...p,audience:'Unissex',line:'Original',fit:p.category==='Calças Baggy'?'Baggy':'Boxy Original',sizes,measurements:makeMeasures(p.category==='Calças Baggy'?38:56,p.category==='Calças Baggy'?100:68)})),...newProducts,...womenProducts];
+const detailImages={
+ 1:'original-black',2:'original-offwhite',3:'original-cobalt',4:'original-black',
+ 5:'baggy-denim',6:'baggy-graphite',7:'essential-black',8:'original-offwhite',
+ 9:'fit-black',10:'fit-offwhite',11:'fit-cobalt',12:'fit-graphite',
+ 13:'cropped-offwhite',14:'cropped-black',15:'babytee-cobalt',16:'wideleg-denim',
+};
+export const products=catalogProducts.map(p=>({...p,detailImage:`/images/products/${detailImages[p.id]}.png`}));
 export const money=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});

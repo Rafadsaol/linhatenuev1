@@ -20,7 +20,7 @@ npm run preview
 
 - Home, catálogo, detalhe de produto, sacola, sobre e conta visual, com navegação por hash.
 - Busca, categorias, coleção (Unissex/Feminino), cor, preço e ordenação; todas as peças mockadas estão disponíveis em P–GG.
-- Seleção de tamanho/cor, galeria com detalhe ampliado, medidas e informações de troca.
+- Seleção de tamanho/cor, foto individual de produto, visualização em tela cheia com tamanho original, medidas e informações de troca.
 - Sacola persistida no localStorage, quantidades, remoção, frete e cupom demonstrativo `LINHA10`.
 - Menu mobile, feedbacks acessíveis, suporte a movimento reduzido e newsletter ilustrativa.
 
@@ -37,3 +37,9 @@ As imagens em `public/images/` foram geradas para a direção visual desta loja 
 A coleção tem 16 peças: oito originais, quatro Boxy Fit unissex com ombros menos deslocados, mangas proporcionais e comprimento mais curto, e quatro femininas (duas boxy cropped, uma baby tee e uma wide leg de cintura alta). As novas peças mantêm somente a logomarca pequena.
 
 `fit-collection.png` usa a mesma grade 4 × 2: Boxy Fit na primeira linha e coleção feminina na segunda. `fit-editorial.png` mostra o caimento no corpo. Descrições e medidas são específicas de cada modelagem. As medidas são ilustrativas da V1 e não são especificações de fabricação.
+
+## Fotografias de produto
+
+O catálogo usa as pranchas leves de coleção. A página de cada produto usa `detailImage`, uma fotografia individual em `public/images/products/`, com muito mais pixels dedicados à peça. Produtos da mesma modelagem e cor podem compartilhar a foto.
+
+`ProductGallery` usa uma imagem real com texto alternativo, prioridade de carregamento e `object-fit: contain`. A ampliação abre um diálogo nativo com foco contido, fechamento por Escape e opção de explorar a imagem em seu tamanho original, sem ampliar artificialmente o recorte da prancha. As fotos permanecem conceituais.
