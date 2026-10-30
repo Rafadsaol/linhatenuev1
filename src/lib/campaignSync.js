@@ -1,6 +1,10 @@
 import {defaultCampaign,validateCampaign} from './admin/campaign.js';
 const key=campaign=>JSON.stringify(validateCampaign(campaign).campaign);
 export function createCampaignSync({getCampaign,onCampaign,onStatus,fetcher=fetch}){
+ if(import.meta.env?.VITE_STATIC_DEMO==='true'){
+  const local=()=>onStatus({state:'unavailable',message:'Demonstração pública: campanha salva apenas neste navegador, sem sincronização entre dispositivos.'});
+  return {publish:local,poll:local,stop:()=>{}};
+ }
  let stopped=false,busy=false,reading=false,pending=null,unavailable=false,generation=0;
  const status=(state,message)=>{if(!stopped)onStatus({state,message})};
  async function request(options){
